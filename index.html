@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a0b2e">
+<title>DTRH 2026 · Fissa Planner</title>
+<style>
+  :root{
+    --bg:#140821; --bg2:#1d0f31; --card:#241340; --card2:#2c1850;
+    --txt:#f3ecff; --muted:#b39ed6; --line:#3a2360;
+    --zon:#ffb43d; --zon-d:#5a3c08;
+    --feest:#ff5fa2; --feest-d:#5a0f31;
+    --rave:#8b5bff; --rave-d:#2c1656;
+    --anders:#7a8aa0; --anders-d:#262e3a;
+    --accent:#ff5fa2;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:radial-gradient(120% 80% at 50% 0%, #2a1147 0%, var(--bg) 55%) fixed;
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.4; padding-bottom:40px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    padding:18px 16px 10px; text-align:center;
+    position:relative;
+  }
+  header h1{margin:0;font-size:22px;letter-spacing:.5px;font-weight:800}
+  header .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+  .wrap{max-width:680px;margin:0 auto;padding:0 12px}
+
+  /* sticky controls */
+  .controls{
+    position:sticky;top:0;z-index:30;
+    background:linear-gradient(180deg, rgba(20,8,33,.97), rgba(20,8,33,.88));
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:8px 0 9px;
+  }
+  .days{display:flex;gap:6px;padding:2px 12px 8px;max-width:680px;margin:0 auto}
+  .day{
+    flex:1;text-align:center;padding:9px 4px;border-radius:12px;
+    background:var(--card);color:var(--muted);border:1px solid var(--line);
+    font-weight:700;font-size:13px;cursor:pointer;transition:.15s;
+  }
+  .day .dn{font-size:11px;font-weight:600;opacity:.8;display:block}
+  .day.active{background:linear-gradient(135deg,#ff5fa2,#8b5bff);color:#fff;border-color:transparent}
+
+  .vibes{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px;max-width:680px;margin:0 auto}
+  .chip{
+    flex:1 1 auto;min-width:62px;text-align:center;
+    padding:8px 6px;border-radius:999px;font-size:12px;font-weight:700;
+    border:1.5px solid var(--line);background:var(--card);color:var(--muted);
+    cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .chip .em{font-size:14px;display:block;line-height:1.2}
+  .chip.on[data-v="all"]{background:#fff;color:#1a0b2e;border-color:#fff}
+  .chip.on[data-v="zon"]{background:var(--zon);color:#3a2600;border-color:var(--zon)}
+  .chip.on[data-v="feest"]{background:var(--feest);color:#fff;border-color:var(--feest)}
+  .chip.on[data-v="rave"]{background:var(--rave);color:#fff;border-color:var(--rave)}
+  .chip.on[data-v="anders"]{background:var(--anders);color:#10151c;border-color:var(--anders)}
+  .chip.on[data-v="fav"]{background:#ffd23d;color:#3a2c00;border-color:#ffd23d}
+
+  .searchrow{display:flex;gap:8px;padding:8px 12px 0;max-width:680px;margin:0 auto}
+  #search{
+    flex:1;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
+    background:var(--card);color:var(--txt);font-size:14px;
+  }
+  #search::placeholder{color:var(--muted)}
+
+  .count{color:var(--muted);font-size:12px;padding:10px 4px 2px}
+
+  /* stage groups */
+  .stage{margin-top:14px}
+  .stage-h{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--muted);padding:4px 6px;position:sticky;top:148px;z-index:5;
+  }
+  .stage-h .bar{height:2px;flex:1;background:var(--line);border-radius:2px}
+
+  .card{
+    display:flex;align-items:stretch;gap:10px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:11px 12px;margin:8px 0;position:relative;overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .card[data-v="zon"]::before{background:var(--zon)}
+  .card[data-v="feest"]::before{background:var(--feest)}
+  .card[data-v="rave"]::before{background:var(--rave)}
+  .card[data-v="anders"]::before{background:var(--anders)}
+
+  .time{
+    flex:0 0 50px;text-align:center;
+  }
+  .time .t1{font-weight:800;font-size:15px}
+  .time .t2{font-size:11px;color:var(--muted);margin-top:1px}
+  .info{flex:1;min-width:0}
+  .info .nm{font-weight:700;font-size:15.5px;margin:0 0 2px}
+  .info .meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .tag{
+    font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
+    text-transform:uppercase;letter-spacing:.3px;
+  }
+  .tag.zon{background:var(--zon-d);color:var(--zon)}
+  .tag.feest{background:var(--feest-d);color:#ffb9d6}
+  .tag.rave{background:var(--rave-d);color:#c5b0ff}
+  .tag.anders{background:var(--anders-d);color:#b9c6d8}
+  .genre{font-size:12px;color:var(--muted)}
+  .fav{
+    flex:0 0 34px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;cursor:pointer;color:#5a4a78;user-select:none;
+    margin:-4px -4px -4px 0;
+  }
+  .fav.on{color:#ffd23d}
+
+  /* location pill (chronological / filtered view) */
+  .loc{font-size:10.5px;font-weight:700;color:var(--muted);background:#1c1030;
+       border:1px solid var(--line);padding:2px 8px;border-radius:999px;
+       display:inline-flex;gap:3px;align-items:center;letter-spacing:.3px}
+  /* glow when a vibe filter is active — matching options light up */
+  .card.lit[data-v="zon"]{box-shadow:0 0 0 1.5px var(--zon),0 8px 26px rgba(255,180,61,.18)}
+  .card.lit[data-v="feest"]{box-shadow:0 0 0 1.5px var(--feest),0 8px 26px rgba(255,95,162,.22)}
+  .card.lit[data-v="rave"]{box-shadow:0 0 0 1.5px var(--rave),0 8px 26px rgba(139,91,255,.24)}
+  .card.lit[data-v="anders"]{box-shadow:0 0 0 1.5px var(--anders),0 8px 26px rgba(122,138,160,.15)}
+  /* live now */
+  .card.live{border-color:#fff;box-shadow:0 0 0 2px #fff,0 8px 30px rgba(255,95,162,.30)}
+  .live-badge{font-size:10px;font-weight:800;color:#fff;background:#e0245e;
+       padding:2px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:ring 1.6s infinite}
+  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}70%{box-shadow:0 0 0 7px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+  .nowline{display:flex;align-items:center;gap:10px;margin:18px 4px 2px;color:#ff7fae;font-weight:800;font-size:12px;letter-spacing:.5px}
+  .nowline .l{height:2px;flex:1;background:linear-gradient(90deg,#ff5fa2,transparent);border-radius:2px}
+  #nowbtn{position:fixed;right:14px;bottom:16px;z-index:50;
+       background:linear-gradient(135deg,#ff5fa2,#8b5bff);color:#fff;border:none;
+       border-radius:999px;padding:12px 18px;font-weight:800;font-size:14px;
+       box-shadow:0 6px 20px rgba(139,91,255,.5);cursor:pointer;display:none}
+  .empty{text-align:center;color:var(--muted);padding:40px 20px;font-size:14px}
+  footer{text-align:center;color:#6f5b94;font-size:11px;padding:24px 20px 8px;line-height:1.6}
+  footer a{color:#9a82c8}
+  .legend{font-size:11px;color:var(--muted);padding:6px 6px 0;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <h1>🐇 DTRH 2026</h1>
+  <div class="sub">Fissa Planner · 3–5 juli · Beuningen</div>
+</header>
+
+<div class="controls">
+  <div class="days" id="days"></div>
+  <div class="vibes" id="vibes">
+    <div class="chip on" data-v="all">Alles</div>
+    <div class="chip" data-v="zon"><span class="em">☀️</span>In de zon</div>
+    <div class="chip" data-v="feest"><span class="em">🎉</span>Feesten</div>
+    <div class="chip" data-v="rave"><span class="em">⚡</span>Ravennn</div>
+    <div class="chip" data-v="anders"><span class="em">💬</span>Anders</div>
+    <div class="chip" data-v="fav"><span class="em">⭐</span>Mijn lijst</div>
+  </div>
+  <div class="searchrow"><input id="search" type="search" placeholder="Zoek artiest of genre…" autocomplete="off"></div>
+</div>
+
+<div class="wrap">
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+  <footer>
+    Gemaakt voor het plannen van jouw festival. Vibe-indeling op basis van research per artiest —<br>
+    ☀️ <b>In de zon</b>: melodische, dromerige muziek &nbsp;·&nbsp; 🎉 <b>Feesten</b>: vrolijke upbeat feestmuziek &nbsp;·&nbsp; ⚡ <b>Ravennn</b>: zware club/rave<br>
+    Tik op ☆ om acts aan <b>Mijn lijst</b> toe te voegen. Tijden zijn indicatief — check het officiële
+    <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
+  </footer>
+</div>
+
+<button id="nowbtn">⏱ Spring naar nu</button>
+
+<script>
+/* ---- Lineup data (day, stage, start, end, name, genre, vibe) ---- */
+const STAGES = ["HOTOT","TEDDY WIDDER","FUZZY LOP","REX","THE BIZARRE","BOSSA NOVA","THE CROQUE MADAME","HOLDING","RADIATE VI","TRAMONTANA","IDYLLISCHE VELDJE"];
+const DAYS = [
+  {id:"vr", lbl:"Vrijdag", date:"3 juli"},
+  {id:"za", lbl:"Zaterdag", date:"4 juli"},
+  {id:"zo", lbl:"Zondag", date:"5 juli"},
+];
+
+const D = [
+// ===================== VRIJDAG =====================
+["vr","HOTOT","14:00","15:30","Nederlands Philharmonisch Orkest","klassiek symfonieorkest","zon"],
+["vr","HOTOT","15:45","16:15","Sticks","DTRH DJ / host","feest"],
+["vr","HOTOT","16:45","18:00","Son Mieux","indie pop","zon"],
+["vr","HOTOT","19:15","20:15","CMAT","country pop","feest"],
+["vr","HOTOT","21:00","22:30","Empire of the Sun","elektronische synthpop","feest"],
+["vr","HOTOT","23:15","00:30","Little Simz","Britse hiphop","feest"],
+
+["vr","TEDDY WIDDER","14:30","15:45","Paradise Bangkok Molam International Band","Thaise molam funk","feest"],
+["vr","TEDDY WIDDER","16:30","17:45","Peaches","electroclash","feest"],
+["vr","TEDDY WIDDER","18:30","19:45","Zwangere Guy","Belgische hiphop","feest"],
+["vr","TEDDY WIDDER","20:30","21:45","Tomora","big beat / EDM","feest"],
+["vr","TEDDY WIDDER","22:15","23:45","De Staat Becomes De Staat","alternatieve rock","feest"],
+["vr","TEDDY WIDDER","00:15","01:45","Rabbit Radio: Liza v/d Brink & Vera Siemons","live radio / talk","anders"],
+
+["vr","FUZZY LOP","14:45","15:45","Jacob Alon","indie folk","zon"],
+["vr","FUZZY LOP","16:15","17:15","Florence Road","indie rock","zon"],
+["vr","FUZZY LOP","18:00","19:00","Mind Enterprises","italo disco","feest"],
+["vr","FUZZY LOP","19:45","20:45","Kevin Morby","indie folk","zon"],
+["vr","FUZZY LOP","21:45","22:45","Apparat","melodische electronica","zon"],
+["vr","FUZZY LOP","23:15","00:30","Two Shell","experimentele bass","rave"],
+["vr","FUZZY LOP","01:00","02:15","Avalon Emerson","melodische techno","rave"],
+
+["vr","REX","12:00","13:00","Morning Rave","feel-good DJ-set","feest"],
+["vr","REX","13:00","14:30","Vasco","house / techno","rave"],
+["vr","REX","14:30","16:00","Lysah b2b Kim Josefine","house / disco b2b","feest"],
+["vr","REX","16:00","17:00","Kareem Ali (live)","deep house","feest"],
+["vr","REX","17:00","18:30","Ash Lauryn","soulful house","feest"],
+["vr","REX","18:45","20:15","Eycee","house electronica","rave"],
+["vr","REX","20:15","22:00","Tom Trago presents: Ignorance","house / techno","rave"],
+["vr","REX","22:00","23:30","Bella","clubmuziek","rave"],
+["vr","REX","23:30","01:00","Amaliah b2b Niks","techno / tech house","rave"],
+["vr","REX","01:00","02:30","Doppelgang","clubmuziek","rave"],
+
+["vr","THE BIZARRE","12:00","13:00","Samba Workshop","dans / workshop","anders"],
+["vr","THE BIZARRE","13:00","14:15","Roda da Holanda","Braziliaanse samba","feest"],
+["vr","THE BIZARRE","14:30","15:30","Sèsè","afro-elektronische club","rave"],
+["vr","THE BIZARRE","16:00","17:00","Faisal","elektronische hiphop","rave"],
+["vr","THE BIZARRE","17:00","18:15","Onda Collective","Afro-Latin club","feest"],
+["vr","THE BIZARRE","18:30","19:45","Yůsu","leftfield downtempo","zon"],
+["vr","THE BIZARRE","19:45","21:00","Bronka","Braziliaanse funk","rave"],
+["vr","THE BIZARRE","21:00","22:15","Sim-Oj","hiphop / club","feest"],
+["vr","THE BIZARRE","22:30","00:00","Chinnamasta","Caribische bass","rave"],
+["vr","THE BIZARRE","00:00","01:30","Nems","baile-funk DJ","feest"],
+["vr","THE BIZARRE","01:30","03:00","Lamsi","bass / UK garage","rave"],
+
+["vr","BOSSA NOVA","10:30","11:15","Adam Quartet + Kika Sprangers","jazz / strijkkwartet","zon"],
+["vr","BOSSA NOVA","14:00","15:00","Dermot Henry","indie folk","zon"],
+["vr","BOSSA NOVA","16:00","17:00","Girl Group","indie pop","feest"],
+["vr","BOSSA NOVA","17:30","18:30","La Niña","sultry pop","feest"],
+["vr","BOSSA NOVA","19:00","22:00","Orkater & Invites","muziektheater","anders"],
+
+["vr","THE CROQUE MADAME","12:30","13:30","The Space Choir","koor-experience","anders"],
+["vr","THE CROQUE MADAME","15:00","20:00","The Croque Madame Revue by Maison the Faux","fashion / performance","anders"],
+["vr","THE CROQUE MADAME","20:15","21:15","Queenie","UK garage soul","feest"],
+["vr","THE CROQUE MADAME","21:30","22:30","Jason","uptempo electro","rave"],
+["vr","THE CROQUE MADAME","23:00","00:30","Youngwoman","bass / eclectisch","rave"],
+
+["vr","HOLDING","12:30","14:00","Zine Workshop","workshop","anders"],
+["vr","HOLDING","14:30","15:30","Hondenfokker","electropunk","rave"],
+["vr","HOLDING","16:00","17:00","Femme Fugazi","post-punk","zon"],
+["vr","HOLDING","17:30","18:30","Juny Martina","alternatieve hiphop","feest"],
+["vr","HOLDING","19:30","20:30","Kaat van Stralen","punk / spoken word","zon"],
+["vr","HOLDING","21:30","23:30","Nachttrein","dromerige indie","zon"],
+
+["vr","RADIATE VI","12:30","13:30","Torus","ambient / techno","rave"],
+["vr","RADIATE VI","13:30","14:30","Jacob Dwyer","ambient soundscapes","zon"],
+["vr","RADIATE VI","14:30","15:30","Merely","dreampop","zon"],
+["vr","RADIATE VI","15:30","16:30","Nexcyia","experimentele ambient","zon"],
+["vr","RADIATE VI","16:30","17:30","Joleidy's Reprieve","experimenteel","anders"],
+["vr","RADIATE VI","17:30","18:45","Marathon Man","eclectische DJ-set","zon"],
+["vr","RADIATE VI","19:00","20:00","La Rat","experimentele hiphop","feest"],
+["vr","RADIATE VI","21:00","22:30","Ojoo","rauwe bass club","rave"],
+["vr","RADIATE VI","23:00","01:30","A View of the Rabbit's Nest","festivalprogramma","anders"],
+
+["vr","TRAMONTANA","11:00","12:00","Masterclass Klimaatpoëzie","talk / poëzie","anders"],
+["vr","TRAMONTANA","13:30","14:30","Brainwash Breakfast Club","talk","anders"],
+["vr","TRAMONTANA","15:00","16:00","Speakers Corner","talk","anders"],
+["vr","TRAMONTANA","16:30","17:30","Live, Love, Lesbi","talk / podcast","anders"],
+["vr","TRAMONTANA","18:30","19:30","Sticks x Nooit Meer Slapen","live podcast","anders"],
+
+["vr","IDYLLISCHE VELDJE","12:30","14:00","Knits & Notes","workshop","anders"],
+["vr","IDYLLISCHE VELDJE","14:00","15:00","Dans Workshop","workshop","anders"],
+["vr","IDYLLISCHE VELDJE","15:00","19:00","Discos Horizontes & Jamaican Jukebox","global grooves DJ","feest"],
+["vr","IDYLLISCHE VELDJE","20:00","03:00","Club Coco","tropische global DJ","feest"],
+
+// ===================== ZATERDAG =====================
+["za","HOTOT","14:00","15:00","Thee Sacred Souls","sweet soul","zon"],
+["za","HOTOT","15:30","16:30","Sierra Ferrell","americana / folk","zon"],
+["za","HOTOT","17:00","18:00","The Last Dinner Party","art rock","zon"],
+["za","HOTOT","18:45","19:45","Dabeull Live Band","funk / boogie","feest"],
+["za","HOTOT","20:30","22:00","David Byrne","art pop / new wave","feest"],
+["za","HOTOT","23:00","00:30","The xx","indie / dreampop","zon"],
+
+["za","TEDDY WIDDER","13:30","14:45","Arp Frique & the Perpetual Singers","afro-funk / disco","feest"],
+["za","TEDDY WIDDER","15:00","16:00","All Them Witches","psychedelische rock","zon"],
+["za","TEDDY WIDDER","16:30","17:30","Johnny Marr","jangle indie rock","zon"],
+["za","TEDDY WIDDER","18:00","19:00","Oklou","dreampop / hyperpop","zon"],
+["za","TEDDY WIDDER","20:00","21:00","Joy Crookes","soul / r&b","zon"],
+["za","TEDDY WIDDER","21:30","22:45","¥ØU$UK€ ¥UK1MAT$U","techno DJ","rave"],
+["za","TEDDY WIDDER","00:00","01:30","Rabbit Radio: Indie Gloria","live radio","anders"],
+
+["za","FUZZY LOP","14:00","15:00","Folk Bitch Trio","folk / harmonie","zon"],
+["za","FUZZY LOP","15:15","16:15","Midnight Generation","nu-disco / funk","feest"],
+["za","FUZZY LOP","16:45","17:45","Genesis Owusu","genre-bending hiphop","feest"],
+["za","FUZZY LOP","18:15","19:15","Westside Cowboy","indie / americana","zon"],
+["za","FUZZY LOP","20:00","21:00","Baxter Dury","art pop / spoken","zon"],
+["za","FUZZY LOP","21:30","22:30","The Mary Wallopers","Ierse punk-folk","feest"],
+["za","FUZZY LOP","23:00","00:00","Moxes","house DJ","feest"],
+["za","FUZZY LOP","00:30","01:30","Narciss","melodische techno / trance","rave"],
+["za","FUZZY LOP","02:00","03:00","DJ Boring","lo-fi house","feest"],
+
+["za","REX","12:00","13:00","Morning Rave","feel-good DJ-set","feest"],
+["za","REX","13:00","14:30","Jannah","clubmuziek","rave"],
+["za","REX","14:30","16:00","Zohar","percussieve techno","rave"],
+["za","REX","16:00","17:00","Croatian Amor (live)","ambient / experimenteel","zon"],
+["za","REX","17:00","18:30","Vegyn","electronica / IDM","zon"],
+["za","REX","18:45","20:15","Verity","bass / jungle techno","rave"],
+["za","REX","20:15","21:30","Nick León (live)","Latin bass / club","rave"],
+["za","REX","21:30","23:00","Pariah","UK techno / bass","rave"],
+["za","REX","23:30","01:00","Ciel","club techno / UK bass","rave"],
+["za","REX","01:00","02:30","Upsammy b2b Gyrofield","experimentele techno / DnB","rave"],
+
+["za","THE BIZARRE","13:00","14:00","Roda da Holanda","Braziliaanse samba","feest"],
+["za","THE BIZARRE","14:00","15:00","Tienson (DJ-set)","club / house","rave"],
+["za","THE BIZARRE","15:30","16:30","Arp Frique (DJ-set)","afro-funk / disco","feest"],
+["za","THE BIZARRE","17:00","18:00","Marla Kether","house / disco / batida","feest"],
+["za","THE BIZARRE","18:30","19:30","Galecta","baile funk / afro club","feest"],
+["za","THE BIZARRE","19:30","20:30","C.Frim","afro / amapiano","feest"],
+["za","THE BIZARRE","21:00","22:00","DJ Travella","singeli","rave"],
+["za","THE BIZARRE","22:00","23:00","Hibotep","global trap / party","feest"],
+["za","THE BIZARRE","23:30","00:30","Turbolenta","diaspora club / Latin","feest"],
+["za","THE BIZARRE","01:00","02:30","DJ Babatr","raptor house / changa tuki","rave"],
+
+["za","BOSSA NOVA","10:30","11:15","Djuwa Mroivili","klassieke piano","zon"],
+["za","BOSSA NOVA","14:00","15:00","Lumï","indie dreampop / folk","zon"],
+["za","BOSSA NOVA","16:00","17:00","Frans Kalf","chanson / indie-folk","zon"],
+["za","BOSSA NOVA","17:30","18:30","Madalitso Band","Malawische kwela","feest"],
+["za","BOSSA NOVA","18:30","19:15","Stay Away from Dante!","melodische hiphop","zon"],
+["za","BOSSA NOVA","19:30","22:30","Orkater & Invites","muziektheater","anders"],
+
+["za","THE CROQUE MADAME","12:30","13:30","The Space Choir","koor-experience","anders"],
+["za","THE CROQUE MADAME","15:00","20:00","The Croque Madame Revue by Maison the Faux","fashion / performance","anders"],
+["za","THE CROQUE MADAME","20:00","20:45","Alice Olsthoorn","hyperpop / club","rave"],
+["za","THE CROQUE MADAME","21:00","22:00","DJ Shahmaran","breaks / jungle / bass","rave"],
+["za","THE CROQUE MADAME","22:30","23:30","Toccororo","techno / acid","rave"],
+["za","THE CROQUE MADAME","00:00","01:00","Mayo","club DJ","rave"],
+
+["za","HOLDING","12:00","13:00","Prof. Soortkill","programma","anders"],
+["za","HOLDING","14:30","15:30","Maha","Soedanese post-punk","feest"],
+["za","HOLDING","16:00","17:00","Clitte-Band","riot grrrl punk","feest"],
+["za","HOLDING","17:30","18:30","Dear Omen","gothic post-punk","zon"],
+["za","HOLDING","19:00","20:30","Hypnosis Therapy","breakbeat / techno punk","rave"],
+["za","HOLDING","21:00","23:30","Nachttrein","dromerige indie","zon"],
+
+["za","RADIATE VI","12:00","13:30","Glinted Records w/ Nessim & Gateless","label showcase","feest"],
+["za","RADIATE VI","13:30","14:30","Jacob Dwyer","ambient soundscapes","zon"],
+["za","RADIATE VI","14:30","15:30","Refreshers: Gizem Öz","dubby techno / deep house","zon"],
+["za","RADIATE VI","15:30","16:30","Orpheu the Wizard","eclectische deep house","feest"],
+["za","RADIATE VI","17:00","18:00","Farida Amadou","free-improv / noise","anders"],
+["za","RADIATE VI","18:00","19:00","Orpheu the Wizard","eclectische deep house","feest"],
+["za","RADIATE VI","19:30","20:30","Berton","techno / dub / bass","rave"],
+["za","RADIATE VI","21:00","22:00","Lazergazer","bass / breaks / electro","rave"],
+["za","RADIATE VI","22:30","01:00","A View of the Rabbit's Nest","festivalprogramma","anders"],
+
+["za","TRAMONTANA","11:00","12:00","Masterclass Vervelen","talk","anders"],
+["za","TRAMONTANA","13:30","14:30","Brainwash Breakfast Club","talk","anders"],
+["za","TRAMONTANA","15:00","16:00","Speakers Corner","talk","anders"],
+["za","TRAMONTANA","16:30","17:30","Studentenkoor Alphons Diepenbrock","koorzang","anders"],
+
+["za","IDYLLISCHE VELDJE","12:30","14:00","Knits & Notes","workshop","anders"],
+["za","IDYLLISCHE VELDJE","14:00","15:00","Dans Workshop","workshop","anders"],
+["za","IDYLLISCHE VELDJE","15:00","19:00","Discos Horizontes & Jamaican Jukebox","global grooves DJ","feest"],
+["za","IDYLLISCHE VELDJE","20:00","03:00","Club Coco","tropische global DJ","feest"],
+
+// ===================== ZONDAG =====================
+["zo","HOTOT","14:00","15:00","Naaz: The Sky Knows I Exist","indie-pop / soul","zon"],
+["zo","HOTOT","16:00","17:00","Beirut","indie-folk","zon"],
+["zo","HOTOT","18:00","19:00","IJsland","hiphop / hyperpop","feest"],
+["zo","HOTOT","19:30","20:45","Loyle Carner","jazzy hiphop","zon"],
+["zo","HOTOT","21:30","23:00","Florence + the Machine","art-pop / indie-rock","zon"],
+
+["zo","TEDDY WIDDER","13:30","14:30","Kin'Gongolo Kiniata","afro-punk / electro-rumba","feest"],
+["zo","TEDDY WIDDER","15:30","16:30","Harry Mack","freestyle rap","feest"],
+["zo","TEDDY WIDDER","17:00","18:00","Charlotte Cardin","pop / soul","zon"],
+["zo","TEDDY WIDDER","18:30","19:45","Matt Berninger","indie-rock / singer-songwriter","zon"],
+["zo","TEDDY WIDDER","20:15","21:45","Overmono","electronica / breakbeat","rave"],
+["zo","TEDDY WIDDER","23:00","01:00","Rabbit Radio: Arnold Scheepmaker","live radio","anders"],
+
+["zo","FUZZY LOP","13:30","14:30","De Nachtwacht","hardcore / gabber","rave"],
+["zo","FUZZY LOP","15:00","16:00","Derya Yıldırım & Grup Şimşek","anatolische psych-folk","zon"],
+["zo","FUZZY LOP","16:30","17:30","Claw Boys Claw","garagerock / punk","feest"],
+["zo","FUZZY LOP","18:30","19:30","Deki Alem","trip-hop / rap","feest"],
+["zo","FUZZY LOP","20:00","21:00","Panic Shack","punk / post-punk","feest"],
+["zo","FUZZY LOP","22:00","23:00","Sticks & ???","verrassingsact","feest"],
+["zo","FUZZY LOP","23:30","00:30","Malou","(italo)house","rave"],
+["zo","FUZZY LOP","01:00","03:00","Gerd Janson b2b Hunee","house / disco","feest"],
+
+["zo","REX","13:00","14:30","Paak Listening Club","vinyl-luistersessie","anders"],
+["zo","REX","14:30","16:00","Gizem","ambient / dub-techno","rave"],
+["zo","REX","16:30","17:30","Luna Ludmila (live)","minimal house / techno","rave"],
+["zo","REX","17:30","19:00","Hervé","house / bass","rave"],
+["zo","REX","19:00","20:00","Rival Consoles (live)","electronica / IDM","zon"],
+["zo","REX","20:30","22:00","Faustin","afro-house / techno","rave"],
+["zo","REX","22:00","23:30","Massimiliano Pagliara","house / italo-disco","feest"],
+["zo","REX","23:30","01:00","Byron Yeates","techno / DnB","rave"],
+["zo","REX","01:00","02:30","Dr. Rubinstein","techno / acid","rave"],
+
+["zo","THE BIZARRE","13:00","14:00","Roda da Holanda","Braziliaanse samba","feest"],
+["zo","THE BIZARRE","14:30","15:30","Yuval Avital","sound-art / compositie","anders"],
+["zo","THE BIZARRE","16:00","17:00","KC Sumatra","clubmuziek","rave"],
+["zo","THE BIZARRE","17:00","18:00","GRCA.","batida / afrotech","feest"],
+["zo","THE BIZARRE","18:30","19:30","Ahadadream","UK bass / amapiano","rave"],
+["zo","THE BIZARRE","19:45","20:45","Riddimbox by Rozaly","bouyon / carnaval club","rave"],
+["zo","THE BIZARRE","21:00","22:00","DJ Tobzy","Nigeriaanse cruise beat","rave"],
+["zo","THE BIZARRE","22:00","23:00","Badsista","baile funk / techno","rave"],
+["zo","THE BIZARRE","23:30","00:30","Sia Sierra","ghettotech / baile funk","rave"],
+["zo","THE BIZARRE","01:00","02:00","Yucky","clubmuziek","rave"],
+
+["zo","BOSSA NOVA","10:30","11:00","MSM String Quartet","klassiek strijkkwartet","zon"],
+["zo","BOSSA NOVA","11:45","12:30","Lonelinoise - Sofia's Trip","hedendaagse kamermuziek","zon"],
+["zo","BOSSA NOVA","14:00","15:00","Nectar Woode","neo-soul / R&B","zon"],
+["zo","BOSSA NOVA","16:00","17:00","Rens & Jaïr","Nederlandse hiphop","feest"],
+["zo","BOSSA NOVA","17:30","18:30","Raynor","atmosferische elektronica","rave"],
+["zo","BOSSA NOVA","18:30","19:15","Rikas","indiepop / funk","feest"],
+["zo","BOSSA NOVA","19:30","22:30","Orkater & Invites","muziektheater","anders"],
+
+["zo","THE CROQUE MADAME","12:45","13:45","The Space Choir","koor-experience","anders"],
+["zo","THE CROQUE MADAME","15:00","20:00","The Croque Madame Revue by Maison the Faux","fashion / performance","anders"],
+["zo","THE CROQUE MADAME","20:00","21:00","Sam Quealy","techno-pop / hyperpop","feest"],
+["zo","THE CROQUE MADAME","21:00","22:00","Nicolini","clubmuziek","rave"],
+["zo","THE CROQUE MADAME","22:30","23:30","Elena Colombi","techno / EBM / industrial","rave"],
+["zo","THE CROQUE MADAME","00:00","01:00","Twiena","techno / trance","rave"],
+
+["zo","HOLDING","12:00","13:00","Tra Fasi & Hotel Mokum","curated / alt club","feest"],
+["zo","HOLDING","14:00","15:00","Ajjit","clubmuziek","rave"],
+["zo","HOLDING","16:30","17:30","Honey I'm Home","shoegaze / indie","zon"],
+["zo","HOLDING","18:00","19:00","Vals Alarm","surfrock / ska / punk","feest"],
+["zo","HOLDING","20:00","21:00","Bomb-Strap","hardcore punk","feest"],
+["zo","HOLDING","21:30","23:30","Nachttrein","dromerige indie","zon"],
+
+["zo","RADIATE VI","12:00","13:00","Camille Maria","eclectische vinyl-DJ","feest"],
+["zo","RADIATE VI","13:30","14:30","Jacob Dwyer","ambient soundscapes","zon"],
+["zo","RADIATE VI","14:30","15:30","Phantom Wizard","ambient-jazz","zon"],
+["zo","RADIATE VI","15:30","16:30","Rrita Jashari","drum & bass / dub","rave"],
+["zo","RADIATE VI","16:30","17:30","Joleidy's Reprieve","experimenteel","anders"],
+["zo","RADIATE VI","17:30","18:30","Margie","techno / club","rave"],
+["zo","RADIATE VI","18:30","19:30","Helen Island","ambient / synthpop","zon"],
+["zo","RADIATE VI","19:30","20:30","Rainy Miller","experimentele R&B / ambient","zon"],
+["zo","RADIATE VI","20:30","21:30","Torus","ambient / techno","rave"],
+["zo","RADIATE VI","22:00","00:30","A View of the Rabbit's Nest","festivalprogramma","anders"],
+
+["zo","TRAMONTANA","11:00","12:00","Masterclass Stem","talk / workshop","anders"],
+["zo","TRAMONTANA","13:30","14:30","Brainwash Breakfast Club","talk","anders"],
+["zo","TRAMONTANA","15:00","16:00","Speakers Corner","talk","anders"],
+["zo","TRAMONTANA","16:30","17:30","De Biecht","talk","anders"],
+
+["zo","IDYLLISCHE VELDJE","12:30","14:00","Knits & Notes","workshop","anders"],
+["zo","IDYLLISCHE VELDJE","14:00","15:00","Dans Workshop","workshop","anders"],
+["zo","IDYLLISCHE VELDJE","15:00","16:30","Discos Horizontes & Jamaican Jukebox","global grooves DJ","feest"],
+["zo","IDYLLISCHE VELDJE","17:00","19:00","Club Coco","tropische global DJ","feest"],
+["zo","IDYLLISCHE VELDJE","20:00","03:00","Discos Horizontes & Jamaican Jukebox","global grooves DJ","feest"],
+];
+
+/* ---- build objects ---- */
+const VIBE_LBL = {zon:"In de zon",feest:"Feesten",rave:"Ravennn",anders:"Anders"};
+function toMin(t){let h=parseInt(t.slice(0,2),10),m=parseInt(t.slice(3),10);return (h<6?h+24:h)*60+m;}
+const items = D.map((r,i)=>{
+  const [day,stage,s,e,name,genre,vibe]=r;
+  return {i,day,stage,s,e,name,genre,vibe,sort:toMin(s),eSort:toMin(e),
+          key:day+"|"+name+"|"+s,
+          search:(name+" "+genre+" "+stage).toLowerCase()};
+});
+
+/* ---- "now" context: which festival day & minute are we in? ---- */
+function festivalContext(){
+  const now=new Date();
+  const eff=new Date(now);
+  if(now.getHours()<6) eff.setDate(eff.getDate()-1); // na middernacht hoort bij vorige festivaldag
+  const map={"2026-7-3":"vr","2026-7-4":"za","2026-7-5":"zo"};
+  const key=eff.getFullYear()+"-"+(eff.getMonth()+1)+"-"+eff.getDate();
+  const dayId=map[key]||null;
+  const nowSort=(now.getHours()<6?now.getHours()+24:now.getHours())*60+now.getMinutes();
+  return {dayId,nowSort};
+}
+const NOW=festivalContext();
+
+/* ---- state ---- */
+let state = {day: NOW.dayId || "vr", vibe:"all", q:""};
+let favs = new Set(JSON.parse(localStorage.getItem("dtrh_favs")||"[]"));
+function saveFavs(){localStorage.setItem("dtrh_favs",JSON.stringify([...favs]));}
+
+/* ---- render days ---- */
+const daysEl=document.getElementById("days");
+DAYS.forEach(d=>{
+  const el=document.createElement("div");
+  el.className="day"+(d.id===state.day?" active":"");
+  el.dataset.d=d.id;
+  el.innerHTML=d.lbl+"<span class='dn'>"+d.date+"</span>";
+  el.onclick=()=>{state.day=d.id;syncDays();render();window.scrollTo({top:0});};
+  daysEl.appendChild(el);
+});
+function syncDays(){[...daysEl.children].forEach(c=>c.classList.toggle("active",c.dataset.d===state.day));}
+
+/* ---- vibe chips ---- */
+const vibesEl=document.getElementById("vibes");
+vibesEl.querySelectorAll(".chip").forEach(c=>{
+  c.onclick=()=>{
+    state.vibe=c.dataset.v;
+    vibesEl.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===c));
+    render();
+  };
+});
+
+/* ---- search ---- */
+document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render();});
+
+/* ---- render list ---- */
+const listEl=document.getElementById("list");
+const countEl=document.getElementById("count");
+const filtered=()=> state.vibe!=="all";   // any music/anders/fav filter active
+
+function isLive(it){return NOW.dayId===it.day && it.sort<=NOW.nowSort && NOW.nowSort<it.eSort;}
+
+function cardHTML(it,opts){
+  const on=favs.has(it.key);
+  const lit=opts.lit?" lit":"";
+  const live=isLive(it)?" live":"";
+  const loc=opts.loc?"<span class='loc'>📍 "+esc(it.stage)+"</span>":"";
+  const liveBadge=isLive(it)?"<span class='live-badge'><span class='dot'></span>NU</span>":"";
+  return "<div class='card"+lit+live+"' data-v='"+it.vibe+"' data-sort='"+it.sort+"'>"+
+    "<div class='time'><div class='t1'>"+it.s+"</div><div class='t2'>"+it.e+"</div></div>"+
+    "<div class='info'><div class='nm'>"+esc(it.name)+"</div>"+
+      "<div class='meta'>"+liveBadge+"<span class='tag "+it.vibe+"'>"+vibeTag(it.vibe)+"</span>"+
+      loc+"<span class='genre'>"+esc(it.genre)+"</span></div></div>"+
+    "<div class='fav"+(on?" on":"")+"' data-k=\""+esc(it.key)+"\">"+(on?"★":"☆")+"</div>"+
+  "</div>";
+}
+
+function render(){
+  let rows=items.filter(it=>it.day===state.day);
+  if(state.vibe==="fav") rows=rows.filter(it=>favs.has(it.key));
+  else if(state.vibe!=="all") rows=rows.filter(it=>it.vibe===state.vibe);
+  if(state.q) rows=rows.filter(it=>it.search.includes(state.q));
+
+  const live=rows.filter(isLive).length;
+  countEl.textContent = rows.length+" "+(rows.length===1?"act":"acts")+
+     (state.vibe==="fav"?" in jouw lijst":"")+(live?" · "+live+" nu live":"");
+
+  if(!rows.length){
+    listEl.innerHTML="<div class='empty'>"+
+      (state.vibe==="fav"?"Nog geen acts in je lijst. Tik op ☆ bij een act om te plannen.":"Geen acts gevonden.")+
+      "</div>";
+    return;
+  }
+
+  let html="";
+  if(filtered()){
+    // chronological "wat kan ik nu doen" view — met locatie + oplichtende kaarten
+    rows.sort((a,b)=> a.sort-b.sort || STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage));
+    let nowInserted=false;
+    rows.forEach(it=>{
+      if(!nowInserted && NOW.dayId===state.day && it.sort>=NOW.nowSort){
+        html+="<div class='nowline' id='nowmark'><span>NU · "+timeNow()+"</span><span class='l'></span></div>";
+        nowInserted=true;
+      }
+      html+=cardHTML(it,{lit:state.vibe!=="fav",loc:true});
+    });
+  } else {
+    // overzicht: gegroepeerd per podium
+    STAGES.forEach(st=>{
+      const grp=rows.filter(r=>r.stage===st).sort((a,b)=>a.sort-b.sort);
+      if(!grp.length) return;
+      html+="<div class='stage'><div class='stage-h'><span>"+st+"</span><span class='bar'></span></div>";
+      grp.forEach(it=>{ html+=cardHTML(it,{lit:false,loc:false}); });
+      html+="</div>";
+    });
+  }
+  listEl.innerHTML=html;
+  listEl.querySelectorAll(".fav").forEach(f=>{
+    f.onclick=(ev)=>{
+      ev.stopPropagation();
+      const k=f.dataset.k;
+      if(favs.has(k)){favs.delete(k);} else {favs.add(k);}
+      saveFavs();
+      if(state.vibe==="fav") render();
+      else {f.classList.toggle("on");f.textContent=favs.has(k)?"★":"☆";}
+    };
+  });
+}
+
+function timeNow(){const n=new Date();return ("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2);}
+function vibeTag(v){return v==="zon"?"☀️ Zon":v==="feest"?"🎉 Feest":v==="rave"?"⚡ Rave":"💬 Anders";}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* ---- jump to now ---- */
+function jumpToNow(smooth){
+  let el=document.getElementById("nowmark") || listEl.querySelector(".card.live");
+  if(!el){ // anders: eerste act die nog komt
+    const cards=[...listEl.querySelectorAll(".card")];
+    el=cards.find(c=>parseInt(c.dataset.sort,10)>=NOW.nowSort);
+  }
+  if(el) el.scrollIntoView({behavior:smooth?"smooth":"auto",block:"center"});
+}
+const nowbtn=document.getElementById("nowbtn");
+if(NOW.dayId){
+  nowbtn.style.display="block";
+  nowbtn.onclick=()=>{ if(state.day!==NOW.dayId){state.day=NOW.dayId;syncDays();render();} jumpToNow(true); };
+}
+
+render();
+/* auto-spring naar nu bij openen tijdens festival */
+if(NOW.dayId===state.day){ requestAnimationFrame(()=>jumpToNow(false)); }
+</script>
+</body>
+</html>
