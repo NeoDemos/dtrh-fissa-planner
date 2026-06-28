@@ -3,152 +3,161 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1a0b2e">
-<title>DTRH 2026 · Fissa Planner</title>
+<meta name="theme-color" content="#15391b">
+<title>Down The Rabbit Hole 2026 · Fissa Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#140821; --bg2:#1d0f31; --card:#241340; --card2:#2c1850;
-    --txt:#f3ecff; --muted:#b39ed6; --line:#3a2360;
-    --zon:#ffb43d; --zon-d:#5a3c08;
-    --feest:#ff5fa2; --feest-d:#5a0f31;
-    --rave:#8b5bff; --rave-d:#2c1656;
-    --anders:#7a8aa0; --anders-d:#262e3a;
-    --accent:#ff5fa2;
+    --paper:#f4edda; --paper2:#efe5cf; --card:#fcf7ea; --ink:#221c12; --muted:#8a7b60;
+    --line:#e2d6ba; --line2:#d4c39c;
+    --zon:#bf7a1c;  --zon-s:#f5e7c9;
+    --feest:#c0413a; --feest-s:#f6dbd4;
+    --rave:#5a4a92; --rave-s:#e6e0f4;
+    --anders:#7c6f55; --anders-s:#eadfc8;
+    --live:#c0413a;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{
-    background:radial-gradient(120% 80% at 50% 0%, #2a1147 0%, var(--bg) 55%) fixed;
-    color:var(--txt);
+    background:var(--paper);
+    color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.4; padding-bottom:40px;
+    line-height:1.4; padding-bottom:90px;
     -webkit-font-smoothing:antialiased;
   }
-  header{
-    padding:18px 16px 10px; text-align:center;
-    position:relative;
-  }
-  header h1{margin:0;font-size:22px;letter-spacing:.5px;font-weight:800}
-  header .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
-  .wrap{max-width:680px;margin:0 auto;padding:0 12px}
+  .serif{font-family:"Fraunces",ui-serif,Georgia,serif}
+  .wrap{max-width:680px;margin:0 auto;padding:0 14px}
 
-  /* sticky controls */
+  /* ---- hero banner ---- */
+  .hero{
+    background:linear-gradient(150deg,#15391b 0%,#1b5747 42%,#3f3759 78%,#5b3a5e 100%);
+    color:#fff;text-align:center;padding:30px 20px 26px;position:relative;overflow:hidden;
+  }
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 50% -10%,rgba(255,255,255,.12),transparent 70%);pointer-events:none}
+  .hero .logo{width:min(82%,420px);height:auto;display:block;margin:0 auto 14px;position:relative}
+  .hero .tagline{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#e9dfce;opacity:.92}
+  .hero .dates{font-size:15px;margin-top:6px;color:#fff;opacity:.85}
+  .hero .intro{font-size:13.5px;line-height:1.55;color:#efe7d8;max-width:430px;margin:14px auto 0;opacity:.92}
+
+  /* ---- sticky controls ---- */
   .controls{
     position:sticky;top:0;z-index:30;
-    background:linear-gradient(180deg, rgba(20,8,33,.97), rgba(20,8,33,.88));
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-    padding:8px 0 9px;
+    background:rgba(244,237,218,.94);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line2);
+    padding:9px 0 10px;
   }
-  .days{display:flex;gap:6px;padding:2px 12px 8px;max-width:680px;margin:0 auto}
+  .days{display:flex;gap:7px;padding:0 14px 9px;max-width:680px;margin:0 auto}
   .day{
-    flex:1;text-align:center;padding:9px 4px;border-radius:12px;
-    background:var(--card);color:var(--muted);border:1px solid var(--line);
-    font-weight:700;font-size:13px;cursor:pointer;transition:.15s;
+    flex:1;text-align:center;padding:9px 4px;border-radius:13px;
+    background:var(--card);color:var(--muted);border:1px solid var(--line2);
+    font-weight:700;font-size:14px;cursor:pointer;transition:.15s;
   }
-  .day .dn{font-size:11px;font-weight:600;opacity:.8;display:block}
-  .day.active{background:linear-gradient(135deg,#ff5fa2,#8b5bff);color:#fff;border-color:transparent}
+  .day .dn{font-size:11px;font-weight:600;opacity:.85;display:block;margin-top:1px}
+  .day.active{background:#15391b;color:#f4edda;border-color:#15391b}
 
-  .vibes{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px;max-width:680px;margin:0 auto}
+  .vibes{display:flex;gap:6px;padding:0 14px;max-width:680px;margin:0 auto;
+    overflow-x:auto;scrollbar-width:none}
+  .vibes::-webkit-scrollbar{display:none}
   .chip{
-    flex:1 1 auto;min-width:62px;text-align:center;
-    padding:8px 6px;border-radius:999px;font-size:12px;font-weight:700;
-    border:1.5px solid var(--line);background:var(--card);color:var(--muted);
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;
+    padding:8px 13px;border-radius:999px;font-size:13px;font-weight:700;
+    border:1.5px solid var(--line2);background:var(--card);color:var(--ink);
     cursor:pointer;transition:.15s;white-space:nowrap;
   }
-  .chip .em{font-size:14px;display:block;line-height:1.2}
-  .chip.on[data-v="all"]{background:#fff;color:#1a0b2e;border-color:#fff}
-  .chip.on[data-v="zon"]{background:var(--zon);color:#3a2600;border-color:var(--zon)}
+  .chip .em{font-size:14px;line-height:1}
+  .chip.on[data-v="all"]{background:#221c12;color:#f4edda;border-color:#221c12}
+  .chip.on[data-v="zon"]{background:var(--zon);color:#fff;border-color:var(--zon)}
   .chip.on[data-v="feest"]{background:var(--feest);color:#fff;border-color:var(--feest)}
   .chip.on[data-v="rave"]{background:var(--rave);color:#fff;border-color:var(--rave)}
-  .chip.on[data-v="anders"]{background:var(--anders);color:#10151c;border-color:var(--anders)}
-  .chip.on[data-v="fav"]{background:#ffd23d;color:#3a2c00;border-color:#ffd23d}
+  .chip.on[data-v="anders"]{background:var(--anders);color:#fff;border-color:var(--anders)}
+  .chip.on[data-v="fav"]{background:#bf7a1c;color:#fff;border-color:#bf7a1c}
 
-  .searchrow{display:flex;gap:8px;padding:8px 12px 0;max-width:680px;margin:0 auto}
-  #search{
-    flex:1;padding:9px 12px;border-radius:10px;border:1px solid var(--line);
-    background:var(--card);color:var(--txt);font-size:14px;
+  .count{color:var(--muted);font-size:12.5px;padding:14px 4px 0;font-weight:600}
+
+  /* ---- genre section headers ---- */
+  .gsec{margin-top:18px}
+  .gsec-h{
+    display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:14px;
+    margin-bottom:4px;border:1px solid;
   }
-  #search::placeholder{color:var(--muted)}
+  .gsec-h .ge{font-size:22px;line-height:1}
+  .gsec-h .gt{flex:1;min-width:0}
+  .gsec-h .gt .gtitle{display:block;font-size:19px;font-weight:700;line-height:1.1}
+  .gsec-h .gt .gsub{display:block;font-size:11.5px;color:var(--muted);margin-top:3px}
+  .gsec-h .gcount{font-size:12px;font-weight:700;opacity:.8}
+  .gsec-h[data-v="zon"]{background:var(--zon-s);border-color:#e8d4a4;color:#7a4e09}
+  .gsec-h[data-v="feest"]{background:var(--feest-s);border-color:#ecc3ba;color:#8c2a25}
+  .gsec-h[data-v="rave"]{background:var(--rave-s);border-color:#cfc4ec;color:#3f3071}
+  .gsec-h[data-v="anders"]{background:var(--anders-s);border-color:#ddcca8;color:#5c4f37}
 
-  .count{color:var(--muted);font-size:12px;padding:10px 4px 2px}
-
-  /* stage groups */
-  .stage{margin-top:14px}
-  .stage-h{
-    display:flex;align-items:center;gap:8px;
-    font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
-    color:var(--muted);padding:4px 6px;position:sticky;top:148px;z-index:5;
-  }
-  .stage-h .bar{height:2px;flex:1;background:var(--line);border-radius:2px}
-
+  /* ---- cards ---- */
   .card{
-    display:flex;align-items:stretch;gap:10px;
-    background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:11px 12px;margin:8px 0;position:relative;overflow:hidden;
+    display:flex;align-items:stretch;gap:11px;
+    background:var(--card);border:1px solid var(--line);border-radius:15px;
+    padding:11px 13px;margin:8px 0;position:relative;overflow:hidden;
+    box-shadow:0 1px 2px rgba(60,40,10,.04);
   }
-  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
   .card[data-v="zon"]::before{background:var(--zon)}
   .card[data-v="feest"]::before{background:var(--feest)}
   .card[data-v="rave"]::before{background:var(--rave)}
   .card[data-v="anders"]::before{background:var(--anders)}
 
-  .time{
-    flex:0 0 50px;text-align:center;
-  }
-  .time .t1{font-weight:800;font-size:15px}
+  .time{flex:0 0 52px;text-align:center;padding-top:1px}
+  .time .t1{font-weight:700;font-size:17px;letter-spacing:-.3px}
   .time .t2{font-size:11px;color:var(--muted);margin-top:1px}
   .info{flex:1;min-width:0}
-  .info .nm{font-weight:700;font-size:15.5px;margin:0 0 2px}
-  .info .meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .tag{
-    font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
-    text-transform:uppercase;letter-spacing:.3px;
-  }
-  .tag.zon{background:var(--zon-d);color:var(--zon)}
-  .tag.feest{background:var(--feest-d);color:#ffb9d6}
-  .tag.rave{background:var(--rave-d);color:#c5b0ff}
-  .tag.anders{background:var(--anders-d);color:#b9c6d8}
-  .genre{font-size:12px;color:var(--muted)}
-  .fav{
-    flex:0 0 34px;display:flex;align-items:center;justify-content:center;
-    font-size:22px;cursor:pointer;color:#5a4a78;user-select:none;
-    margin:-4px -4px -4px 0;
-  }
-  .fav.on{color:#ffd23d}
-
-  /* location pill (chronological / filtered view) */
-  .loc{font-size:10.5px;font-weight:700;color:var(--muted);background:#1c1030;
+  .info .nm{font-weight:600;font-size:17px;line-height:1.2;margin:0 0 4px;letter-spacing:-.1px}
+  .info .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .tag{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+  .tag.zon{background:var(--zon-s);color:#7a4e09}
+  .tag.feest{background:var(--feest-s);color:#8c2a25}
+  .tag.rave{background:var(--rave-s);color:#3f3071}
+  .tag.anders{background:var(--anders-s);color:#5c4f37}
+  .loc{font-size:10px;font-weight:700;color:var(--muted);background:var(--paper2);
        border:1px solid var(--line);padding:2px 8px;border-radius:999px;
-       display:inline-flex;gap:3px;align-items:center;letter-spacing:.3px}
-  /* glow when a vibe filter is active — matching options light up */
-  .card.lit[data-v="zon"]{box-shadow:0 0 0 1.5px var(--zon),0 8px 26px rgba(255,180,61,.18)}
-  .card.lit[data-v="feest"]{box-shadow:0 0 0 1.5px var(--feest),0 8px 26px rgba(255,95,162,.22)}
-  .card.lit[data-v="rave"]{box-shadow:0 0 0 1.5px var(--rave),0 8px 26px rgba(139,91,255,.24)}
-  .card.lit[data-v="anders"]{box-shadow:0 0 0 1.5px var(--anders),0 8px 26px rgba(122,138,160,.15)}
+       display:inline-flex;gap:3px;align-items:center;letter-spacing:.3px;text-transform:uppercase}
+  .genre{font-size:12.5px;color:var(--muted)}
+  .fav{flex:0 0 32px;display:flex;align-items:center;justify-content:center;
+    font-size:23px;cursor:pointer;color:#cab98f;user-select:none;margin:-4px -4px -4px 0}
+  .fav.on{color:#bf7a1c}
+
+  /* lit (a vibe filter is active) */
+  .card.lit[data-v="zon"]{box-shadow:0 0 0 1.5px var(--zon),0 8px 22px rgba(191,122,28,.16)}
+  .card.lit[data-v="feest"]{box-shadow:0 0 0 1.5px var(--feest),0 8px 22px rgba(192,65,58,.16)}
+  .card.lit[data-v="rave"]{box-shadow:0 0 0 1.5px var(--rave),0 8px 22px rgba(90,74,146,.18)}
+  .card.lit[data-v="anders"]{box-shadow:0 0 0 1.5px var(--anders),0 8px 22px rgba(124,111,85,.14)}
+
   /* live now */
-  .card.live{border-color:#fff;box-shadow:0 0 0 2px #fff,0 8px 30px rgba(255,95,162,.30)}
-  .live-badge{font-size:10px;font-weight:800;color:#fff;background:#e0245e;
-       padding:2px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
-  .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:ring 1.6s infinite}
-  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}70%{box-shadow:0 0 0 7px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
-  .nowline{display:flex;align-items:center;gap:10px;margin:18px 4px 2px;color:#ff7fae;font-weight:800;font-size:12px;letter-spacing:.5px}
-  .nowline .l{height:2px;flex:1;background:linear-gradient(90deg,#ff5fa2,transparent);border-radius:2px}
+  .card.live{border-color:var(--live);box-shadow:0 0 0 2px var(--live),0 8px 24px rgba(192,65,58,.2)}
+  .live-badge{font-size:9.5px;font-weight:800;color:#fff;background:var(--live);
+       padding:2px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;letter-spacing:.5px}
+  .dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:ring 1.6s infinite}
+  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{box-shadow:0 0 0 6px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+  .nowline{display:flex;align-items:center;gap:10px;margin:18px 4px 2px;color:var(--live);font-weight:800;font-size:12px;letter-spacing:.6px;text-transform:uppercase}
+  .nowline .l{height:2px;flex:1;background:linear-gradient(90deg,var(--live),transparent);border-radius:2px}
+
   #nowbtn{position:fixed;right:14px;bottom:16px;z-index:50;
-       background:linear-gradient(135deg,#ff5fa2,#8b5bff);color:#fff;border:none;
-       border-radius:999px;padding:12px 18px;font-weight:800;font-size:14px;
-       box-shadow:0 6px 20px rgba(139,91,255,.5);cursor:pointer;display:none}
-  .empty{text-align:center;color:var(--muted);padding:40px 20px;font-size:14px}
-  footer{text-align:center;color:#6f5b94;font-size:11px;padding:24px 20px 8px;line-height:1.6}
-  footer a{color:#9a82c8}
-  .legend{font-size:11px;color:var(--muted);padding:6px 6px 0;text-align:center}
+       background:#15391b;color:#f4edda;border:1px solid #2c5e3a;
+       border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;
+       box-shadow:0 8px 22px rgba(21,57,27,.4);cursor:pointer;display:none}
+
+  .empty{text-align:center;color:var(--muted);padding:46px 20px;font-size:14px}
+  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:30px 18px 10px;line-height:1.7}
+  footer a{color:#8c2a25;font-weight:600}
 </style>
 </head>
 <body>
-<header>
-  <h1>🐇 DTRH 2026</h1>
-  <div class="sub">Fissa Planner · 3–5 juli · Beuningen</div>
-</header>
+
+<div class="hero">
+  <img class="logo" src="logo.svg" alt="Down The Rabbit Hole 2026">
+  <div class="tagline">Fissa Planner</div>
+  <div class="dates serif">3 · 4 · 5 juli 2026 — De Groene Heuvels</div>
+  <div class="intro">De volledige timetable, ingedeeld op vibe. Kies je dag en je stemming —
+    de app springt vanzelf naar het moment van nu.</div>
+</div>
 
 <div class="controls">
   <div class="days" id="days"></div>
@@ -160,16 +169,15 @@
     <div class="chip" data-v="anders"><span class="em">💬</span>Anders</div>
     <div class="chip" data-v="fav"><span class="em">⭐</span>Mijn lijst</div>
   </div>
-  <div class="searchrow"><input id="search" type="search" placeholder="Zoek artiest of genre…" autocomplete="off"></div>
 </div>
 
 <div class="wrap">
   <div class="count" id="count"></div>
   <div id="list"></div>
   <footer>
-    Gemaakt voor het plannen van jouw festival. Vibe-indeling op basis van research per artiest —<br>
-    ☀️ <b>In de zon</b>: melodische, dromerige muziek &nbsp;·&nbsp; 🎉 <b>Feesten</b>: vrolijke upbeat feestmuziek &nbsp;·&nbsp; ⚡ <b>Ravennn</b>: zware club/rave<br>
-    Tik op ☆ om acts aan <b>Mijn lijst</b> toe te voegen. Tijden zijn indicatief — check het officiële
+    Vibe-indeling op basis van research per artiest.<br>
+    ☀️ <b>In de zon</b> · melodisch wegzweven &nbsp;—&nbsp; 🎉 <b>Feesten</b> · vrolijke upbeat feestmuziek &nbsp;—&nbsp; ⚡ <b>Ravennn</b> · zware club / rave<br>
+    Tik op ☆ om acts aan <b>Mijn lijst</b> te zetten. Tijden zijn indicatief — officieel
     <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
   </footer>
 </div>
@@ -451,13 +459,18 @@ const D = [
 ];
 
 /* ---- build objects ---- */
-const VIBE_LBL = {zon:"In de zon",feest:"Feesten",rave:"Ravennn",anders:"Anders"};
+const GENRE_ORDER = ["zon","feest","rave","anders"];
+const META = {
+  zon:  {e:"☀️", t:"In de zon",     s:"melodisch wegzweven in de zon"},
+  feest:{e:"🎉", t:"Lekker feesten", s:"vrolijke upbeat feestmuziek"},
+  rave: {e:"⚡", t:"Ravennn",        s:"zware club & rave"},
+  anders:{e:"💬",t:"Anders",         s:"talks, theater & workshops"},
+};
 function toMin(t){let h=parseInt(t.slice(0,2),10),m=parseInt(t.slice(3),10);return (h<6?h+24:h)*60+m;}
 const items = D.map((r,i)=>{
   const [day,stage,s,e,name,genre,vibe]=r;
   return {i,day,stage,s,e,name,genre,vibe,sort:toMin(s),eSort:toMin(e),
-          key:day+"|"+name+"|"+s,
-          search:(name+" "+genre+" "+stage).toLowerCase()};
+          key:day+"|"+name+"|"+s};
 });
 
 /* ---- "now" context: which festival day & minute are we in? ---- */
@@ -500,69 +513,73 @@ vibesEl.querySelectorAll(".chip").forEach(c=>{
   };
 });
 
-/* ---- search ---- */
-document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render();});
-
 /* ---- render list ---- */
 const listEl=document.getElementById("list");
 const countEl=document.getElementById("count");
-const filtered=()=> state.vibe!=="all";   // any music/anders/fav filter active
 
 function isLive(it){return NOW.dayId===it.day && it.sort<=NOW.nowSort && NOW.nowSort<it.eSort;}
-
+let nowInserted=false;
+function maybeNowline(it){
+  if(!nowInserted && NOW.dayId===state.day && it.sort>=NOW.nowSort){
+    nowInserted=true;
+    return "<div class='nowline' id='nowmark'><span>● Nu · "+timeNow()+"</span><span class='l'></span></div>";
+  }
+  return "";
+}
 function cardHTML(it,opts){
   const on=favs.has(it.key);
   const lit=opts.lit?" lit":"";
   const live=isLive(it)?" live":"";
-  const loc=opts.loc?"<span class='loc'>📍 "+esc(it.stage)+"</span>":"";
-  const liveBadge=isLive(it)?"<span class='live-badge'><span class='dot'></span>NU</span>":"";
+  const liveBadge=isLive(it)?"<span class='live-badge'><span class='dot'></span>NU LIVE</span>":"";
   return "<div class='card"+lit+live+"' data-v='"+it.vibe+"' data-sort='"+it.sort+"'>"+
-    "<div class='time'><div class='t1'>"+it.s+"</div><div class='t2'>"+it.e+"</div></div>"+
-    "<div class='info'><div class='nm'>"+esc(it.name)+"</div>"+
-      "<div class='meta'>"+liveBadge+"<span class='tag "+it.vibe+"'>"+vibeTag(it.vibe)+"</span>"+
-      loc+"<span class='genre'>"+esc(it.genre)+"</span></div></div>"+
+    "<div class='time serif'><div class='t1'>"+it.s+"</div><div class='t2'>"+it.e+"</div></div>"+
+    "<div class='info'><div class='nm serif'>"+esc(it.name)+"</div>"+
+      "<div class='meta'>"+liveBadge+
+      "<span class='loc'>📍 "+esc(it.stage)+"</span>"+
+      "<span class='genre'>"+esc(it.genre)+"</span></div></div>"+
     "<div class='fav"+(on?" on":"")+"' data-k=\""+esc(it.key)+"\">"+(on?"★":"☆")+"</div>"+
   "</div>";
 }
+function genreHeader(v,n){
+  return "<div class='gsec-h' data-v='"+v+"'>"+
+    "<span class='ge'>"+META[v].e+"</span>"+
+    "<span class='gt'><span class='gtitle serif'>"+META[v].t+"</span>"+
+    "<span class='gsub'>"+META[v].s+"</span></span>"+
+    "<span class='gcount'>"+n+"</span></div>";
+}
 
 function render(){
+  nowInserted=false;
   let rows=items.filter(it=>it.day===state.day);
   if(state.vibe==="fav") rows=rows.filter(it=>favs.has(it.key));
   else if(state.vibe!=="all") rows=rows.filter(it=>it.vibe===state.vibe);
-  if(state.q) rows=rows.filter(it=>it.search.includes(state.q));
+  const byTime=(a,b)=> a.sort-b.sort || STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage);
 
   const live=rows.filter(isLive).length;
-  countEl.textContent = rows.length+" "+(rows.length===1?"act":"acts")+
-     (state.vibe==="fav"?" in jouw lijst":"")+(live?" · "+live+" nu live":"");
+  countEl.textContent = rows.length+" acts · "+state.day.toUpperCase()+
+     (state.vibe==="fav"?" · jouw lijst":"")+(live?" · "+live+" nu live":"");
 
   if(!rows.length){
     listEl.innerHTML="<div class='empty'>"+
-      (state.vibe==="fav"?"Nog geen acts in je lijst. Tik op ☆ bij een act om te plannen.":"Geen acts gevonden.")+
+      (state.vibe==="fav"?"Nog geen acts in je lijst.<br>Tik op ☆ bij een act om te plannen.":"Geen acts in deze categorie.")+
       "</div>";
     return;
   }
 
   let html="";
-  if(filtered()){
-    // chronological "wat kan ik nu doen" view — met locatie + oplichtende kaarten
-    rows.sort((a,b)=> a.sort-b.sort || STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage));
-    let nowInserted=false;
-    rows.forEach(it=>{
-      if(!nowInserted && NOW.dayId===state.day && it.sort>=NOW.nowSort){
-        html+="<div class='nowline' id='nowmark'><span>NU · "+timeNow()+"</span><span class='l'></span></div>";
-        nowInserted=true;
-      }
-      html+=cardHTML(it,{lit:state.vibe!=="fav",loc:true});
-    });
-  } else {
-    // overzicht: gegroepeerd per podium
-    STAGES.forEach(st=>{
-      const grp=rows.filter(r=>r.stage===st).sort((a,b)=>a.sort-b.sort);
+  if(state.vibe==="all"){
+    // VOLLEDIGE TIMELINE INGEDEELD OP GENRE
+    GENRE_ORDER.forEach(v=>{
+      const grp=rows.filter(r=>r.vibe===v).sort(byTime);
       if(!grp.length) return;
-      html+="<div class='stage'><div class='stage-h'><span>"+st+"</span><span class='bar'></span></div>";
-      grp.forEach(it=>{ html+=cardHTML(it,{lit:false,loc:false}); });
+      html+="<div class='gsec'>"+genreHeader(v,grp.length);
+      grp.forEach(it=>{ html+=maybeNowline(it)+cardHTML(it,{lit:false}); });
       html+="</div>";
     });
+  } else {
+    // één categorie, chronologisch, oplichtend, met NU-lijn
+    rows.sort(byTime);
+    rows.forEach(it=>{ html+=maybeNowline(it)+cardHTML(it,{lit:state.vibe!=="fav"}); });
   }
   listEl.innerHTML=html;
   listEl.querySelectorAll(".fav").forEach(f=>{
@@ -578,7 +595,6 @@ function render(){
 }
 
 function timeNow(){const n=new Date();return ("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2);}
-function vibeTag(v){return v==="zon"?"☀️ Zon":v==="feest"?"🎉 Feest":v==="rave"?"⚡ Rave":"💬 Anders";}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
 /* ---- jump to now ---- */
