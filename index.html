@@ -7,159 +7,215 @@
 <title>Down The Rabbit Hole 2026 · Fissa Planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#f4edda; --paper2:#efe5cf; --card:#fcf7ea; --ink:#221c12; --muted:#8a7b60;
-    --line:#e2d6ba; --line2:#d4c39c;
-    --zon:#bf7a1c;  --zon-s:#f5e7c9;
-    --feest:#c0413a; --feest-s:#f6dbd4;
-    --rave:#5a4a92; --rave-s:#e6e0f4;
-    --anders:#7c6f55; --anders-s:#eadfc8;
-    --live:#c0413a;
+    --paper:#f3ead4; --paper2:#ece0c6; --card:#fbf5e6; --ink:#23190d; --muted:#897a5c;
+    --line:#ddcfae; --line2:#cdb78d; --hair:#cbbd9c;
+    --green:#15391b; --green2:#1b5747;
+    --zon:#bd722a;  --zon-s:#f4e5c6; --zon-i:#7c4708;
+    --feest:#b53c34; --feest-s:#f4d6cd; --feest-i:#86241f;
+    --rave:#564490; --rave-s:#e2dcf2; --rave-i:#3a2d6b;
+    --anders:#766a4f; --anders-s:#e7dcc3; --anders-i:#544a33;
+    --live:#b53c34;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{
     background:var(--paper);
     color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.4; padding-bottom:90px;
+    font-family:"Fraunces",ui-serif,Georgia,"Times New Roman",serif;
+    font-optical-sizing:auto;
+    line-height:1.45; padding-bottom:92px;
     -webkit-font-smoothing:antialiased;
   }
-  .serif{font-family:"Fraunces",ui-serif,Georgia,serif}
-  .wrap{max-width:680px;margin:0 auto;padding:0 14px}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .kicker{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    text-transform:uppercase;letter-spacing:.18em;font-weight:700}
+  .wrap{max-width:680px;margin:0 auto;padding:0 15px}
 
   /* ---- hero banner ---- */
   .hero{
-    background:linear-gradient(150deg,#15391b 0%,#1b5747 42%,#3f3759 78%,#5b3a5e 100%);
-    color:#fff;text-align:center;padding:30px 20px 26px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(80% 90% at 18% 0%,rgba(120,180,120,.18),transparent 60%),
+      radial-gradient(70% 80% at 100% 100%,rgba(150,90,140,.30),transparent 60%),
+      linear-gradient(155deg,#143a1c 0%,#1b5747 38%,#3a3559 74%,#5a3a5d 100%);
+    color:#fff;text-align:center;padding:34px 22px 26px;position:relative;overflow:hidden;
   }
-  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 50% -10%,rgba(255,255,255,.12),transparent 70%);pointer-events:none}
-  .hero .logo{width:min(82%,420px);height:auto;display:block;margin:0 auto 14px;position:relative}
-  .hero .tagline{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#e9dfce;opacity:.92}
-  .hero .dates{font-size:15px;margin-top:6px;color:#fff;opacity:.85}
-  .hero .intro{font-size:13.5px;line-height:1.55;color:#efe7d8;max-width:430px;margin:14px auto 0;opacity:.92}
+  .hero::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 70% at 50% -15%,rgba(255,255,255,.14),transparent 70%);pointer-events:none}
+  .hero .logo{width:min(84%,440px);height:auto;display:block;margin:0 auto 6px;position:relative;
+    filter:drop-shadow(0 2px 14px rgba(0,0,0,.25))}
+  .hero .rule{width:46px;height:1px;background:rgba(255,255,255,.5);margin:14px auto 12px}
+  .hero .tagline{font-size:11.5px;letter-spacing:.34em;color:#efe6d4}
+  .hero .dates{font-size:16px;margin-top:9px;color:#fff;font-style:italic;font-weight:400;opacity:.95}
+  .hero .intro{font-size:13.5px;line-height:1.6;color:#ece2cf;max-width:440px;margin:13px auto 0;opacity:.9}
+
+  /* ---- top tabs (Programma / Plattegrond) ---- */
+  .topnav{position:sticky;top:0;z-index:40;background:var(--green);
+    display:flex;justify-content:center;gap:0;border-bottom:1px solid rgba(255,255,255,.12)}
+  .topnav button{
+    flex:0 1 auto;background:none;border:none;cursor:pointer;color:rgba(244,237,218,.6);
+    font-family:inherit;font-size:16px;font-weight:600;padding:13px 24px;position:relative;letter-spacing:.01em;
+  }
+  .topnav button .ic{margin-right:7px}
+  .topnav button.on{color:#fff}
+  .topnav button.on::after{content:"";position:absolute;left:18px;right:18px;bottom:0;height:3px;
+    background:#e7c46a;border-radius:3px 3px 0 0}
 
   /* ---- sticky controls ---- */
   .controls{
-    position:sticky;top:0;z-index:30;
-    background:rgba(244,237,218,.94);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line2);
-    padding:9px 0 10px;
+    position:sticky;top:49px;z-index:30;
+    background:rgba(243,234,212,.96);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line2);padding:11px 0 11px;
   }
-  .days{display:flex;gap:7px;padding:0 14px 9px;max-width:680px;margin:0 auto}
+  .days{display:flex;gap:8px;padding:0 15px 10px;max-width:680px;margin:0 auto}
   .day{
-    flex:1;text-align:center;padding:9px 4px;border-radius:13px;
+    flex:1;text-align:center;padding:9px 4px;border-radius:12px;
     background:var(--card);color:var(--muted);border:1px solid var(--line2);
-    font-weight:700;font-size:14px;cursor:pointer;transition:.15s;
+    font-weight:600;font-size:16px;cursor:pointer;transition:.15s;letter-spacing:-.01em;
   }
-  .day .dn{font-size:11px;font-weight:600;opacity:.85;display:block;margin-top:1px}
-  .day.active{background:#15391b;color:#f4edda;border-color:#15391b}
+  .day .dn{font-size:11px;font-weight:600;opacity:.8;display:block;margin-top:1px;font-style:italic}
+  .day.active{background:var(--green);color:#f4edda;border-color:var(--green)}
 
-  .vibes{display:flex;gap:6px;padding:0 14px;max-width:680px;margin:0 auto;
-    overflow-x:auto;scrollbar-width:none}
+  .vibes{display:flex;gap:7px;padding:0 15px;max-width:680px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
   .vibes::-webkit-scrollbar{display:none}
   .chip{
-    flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;
-    padding:8px 13px;border-radius:999px;font-size:13px;font-weight:700;
-    border:1.5px solid var(--line2);background:var(--card);color:var(--ink);
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    padding:8px 14px;border-radius:999px;font-size:15px;font-weight:600;
+    border:1px solid var(--line2);background:var(--card);color:var(--ink);
     cursor:pointer;transition:.15s;white-space:nowrap;
   }
   .chip .em{font-size:14px;line-height:1}
-  .chip.on[data-v="all"]{background:#221c12;color:#f4edda;border-color:#221c12}
+  .chip.on[data-v="all"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .chip.on[data-v="zon"]{background:var(--zon);color:#fff;border-color:var(--zon)}
   .chip.on[data-v="feest"]{background:var(--feest);color:#fff;border-color:var(--feest)}
   .chip.on[data-v="rave"]{background:var(--rave);color:#fff;border-color:var(--rave)}
   .chip.on[data-v="anders"]{background:var(--anders);color:#fff;border-color:var(--anders)}
-  .chip.on[data-v="fav"]{background:#bf7a1c;color:#fff;border-color:#bf7a1c}
+  .chip.on[data-v="fav"]{background:var(--zon);color:#fff;border-color:var(--zon)}
 
-  .count{color:var(--muted);font-size:12.5px;padding:14px 4px 0;font-weight:600}
+  .count{color:var(--muted);font-size:11px;padding:15px 4px 0;letter-spacing:.16em}
 
   /* ---- genre section headers ---- */
-  .gsec{margin-top:18px}
-  .gsec-h{
-    display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:14px;
-    margin-bottom:4px;border:1px solid;
-  }
-  .gsec-h .ge{font-size:22px;line-height:1}
+  .gsec{margin-top:20px}
+  .gsec-h{display:flex;align-items:center;gap:13px;padding:11px 15px;border-radius:14px;margin-bottom:6px;border:1px solid}
+  .gsec-h .ge{font-size:25px;line-height:1}
   .gsec-h .gt{flex:1;min-width:0}
-  .gsec-h .gt .gtitle{display:block;font-size:19px;font-weight:700;line-height:1.1}
-  .gsec-h .gt .gsub{display:block;font-size:11.5px;color:var(--muted);margin-top:3px}
-  .gsec-h .gcount{font-size:12px;font-weight:700;opacity:.8}
-  .gsec-h[data-v="zon"]{background:var(--zon-s);border-color:#e8d4a4;color:#7a4e09}
-  .gsec-h[data-v="feest"]{background:var(--feest-s);border-color:#ecc3ba;color:#8c2a25}
-  .gsec-h[data-v="rave"]{background:var(--rave-s);border-color:#cfc4ec;color:#3f3071}
-  .gsec-h[data-v="anders"]{background:var(--anders-s);border-color:#ddcca8;color:#5c4f37}
+  .gsec-h .gt .gtitle{display:block;font-size:23px;font-weight:600;line-height:1.05;letter-spacing:-.01em}
+  .gsec-h .gt .gsub{display:block;font-size:12px;margin-top:3px;font-style:italic;opacity:.85}
+  .gsec-h .gcount{font-size:13px;font-weight:700;opacity:.7}
+  .gsec-h[data-v="zon"]{background:var(--zon-s);border-color:#e2cb9c;color:var(--zon-i)}
+  .gsec-h[data-v="feest"]{background:var(--feest-s);border-color:#e8bdb3;color:var(--feest-i)}
+  .gsec-h[data-v="rave"]{background:var(--rave-s);border-color:#c8bdec;color:var(--rave-i)}
+  .gsec-h[data-v="anders"]{background:var(--anders-s);border-color:#d8c8a3;color:var(--anders-i)}
 
   /* ---- cards ---- */
-  .card{
-    display:flex;align-items:stretch;gap:11px;
-    background:var(--card);border:1px solid var(--line);border-radius:15px;
-    padding:11px 13px;margin:8px 0;position:relative;overflow:hidden;
-    box-shadow:0 1px 2px rgba(60,40,10,.04);
-  }
+  .card{display:flex;align-items:stretch;gap:12px;background:var(--card);
+    border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin:9px 0;
+    position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(60,40,10,.05)}
   .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
   .card[data-v="zon"]::before{background:var(--zon)}
   .card[data-v="feest"]::before{background:var(--feest)}
   .card[data-v="rave"]::before{background:var(--rave)}
   .card[data-v="anders"]::before{background:var(--anders)}
 
-  .time{flex:0 0 52px;text-align:center;padding-top:1px}
-  .time .t1{font-weight:700;font-size:17px;letter-spacing:-.3px}
-  .time .t2{font-size:11px;color:var(--muted);margin-top:1px}
+  .time{flex:0 0 54px;text-align:center;padding-top:1px}
+  .time .t1{font-weight:600;font-size:19px;letter-spacing:-.02em}
+  .time .t2{font-size:11px;color:var(--muted);margin-top:0;font-style:italic}
   .info{flex:1;min-width:0}
-  .info .nm{font-weight:600;font-size:17px;line-height:1.2;margin:0 0 4px;letter-spacing:-.1px}
-  .info .meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-  .tag{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
-  .tag.zon{background:var(--zon-s);color:#7a4e09}
-  .tag.feest{background:var(--feest-s);color:#8c2a25}
-  .tag.rave{background:var(--rave-s);color:#3f3071}
-  .tag.anders{background:var(--anders-s);color:#5c4f37}
-  .loc{font-size:10px;font-weight:700;color:var(--muted);background:var(--paper2);
-       border:1px solid var(--line);padding:2px 8px;border-radius:999px;
-       display:inline-flex;gap:3px;align-items:center;letter-spacing:.3px;text-transform:uppercase}
-  .genre{font-size:12.5px;color:var(--muted)}
-  .fav{flex:0 0 32px;display:flex;align-items:center;justify-content:center;
-    font-size:23px;cursor:pointer;color:#cab98f;user-select:none;margin:-4px -4px -4px 0}
-  .fav.on{color:#bf7a1c}
+  .info .nm{font-weight:600;font-size:19px;line-height:1.15;margin:1px 0 5px;letter-spacing:-.015em}
+  .info .meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .loc{font-size:9.5px;font-weight:700;color:var(--muted);background:var(--paper2);
+       border:1px solid var(--line);padding:3px 8px;border-radius:999px;
+       display:inline-flex;gap:3px;align-items:center;letter-spacing:.07em;text-transform:uppercase;
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .genre{font-size:14px;color:var(--muted);font-style:italic}
+  .fav{flex:0 0 30px;display:flex;align-items:center;justify-content:center;
+    font-size:24px;cursor:pointer;color:#cbbd99;user-select:none;margin:-4px -4px -4px 0}
+  .fav.on{color:var(--zon)}
 
   /* lit (a vibe filter is active) */
-  .card.lit[data-v="zon"]{box-shadow:0 0 0 1.5px var(--zon),0 8px 22px rgba(191,122,28,.16)}
-  .card.lit[data-v="feest"]{box-shadow:0 0 0 1.5px var(--feest),0 8px 22px rgba(192,65,58,.16)}
-  .card.lit[data-v="rave"]{box-shadow:0 0 0 1.5px var(--rave),0 8px 22px rgba(90,74,146,.18)}
-  .card.lit[data-v="anders"]{box-shadow:0 0 0 1.5px var(--anders),0 8px 22px rgba(124,111,85,.14)}
+  .card.lit[data-v="zon"]{box-shadow:0 0 0 1.5px var(--zon),0 9px 22px rgba(189,114,42,.16)}
+  .card.lit[data-v="feest"]{box-shadow:0 0 0 1.5px var(--feest),0 9px 22px rgba(181,60,52,.16)}
+  .card.lit[data-v="rave"]{box-shadow:0 0 0 1.5px var(--rave),0 9px 22px rgba(86,68,144,.18)}
+  .card.lit[data-v="anders"]{box-shadow:0 0 0 1.5px var(--anders),0 9px 22px rgba(118,106,79,.14)}
 
   /* live now */
-  .card.live{border-color:var(--live);box-shadow:0 0 0 2px var(--live),0 8px 24px rgba(192,65,58,.2)}
-  .live-badge{font-size:9.5px;font-weight:800;color:#fff;background:var(--live);
-       padding:2px 8px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;letter-spacing:.5px}
+  .card.live{border-color:var(--live);box-shadow:0 0 0 2px var(--live),0 9px 24px rgba(181,60,52,.2)}
+  .live-badge{font-size:9px;font-weight:800;color:#fff;background:var(--live);padding:3px 8px;border-radius:999px;
+       display:inline-flex;align-items:center;gap:5px;letter-spacing:.1em;
+       font-family:-apple-system,BlinkMacSystemFont,sans-serif}
   .dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:ring 1.6s infinite}
   @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{box-shadow:0 0 0 6px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
-  .nowline{display:flex;align-items:center;gap:10px;margin:18px 4px 2px;color:var(--live);font-weight:800;font-size:12px;letter-spacing:.6px;text-transform:uppercase}
+  .nowline{display:flex;align-items:center;gap:11px;margin:20px 4px 4px;color:var(--live);font-weight:700;
+    font-size:11px;letter-spacing:.16em;font-family:-apple-system,sans-serif}
   .nowline .l{height:2px;flex:1;background:linear-gradient(90deg,var(--live),transparent);border-radius:2px}
 
-  #nowbtn{position:fixed;right:14px;bottom:16px;z-index:50;
-       background:#15391b;color:#f4edda;border:1px solid #2c5e3a;
-       border-radius:999px;padding:12px 18px;font-weight:700;font-size:14px;
-       box-shadow:0 8px 22px rgba(21,57,27,.4);cursor:pointer;display:none}
+  #nowbtn{position:fixed;right:15px;bottom:18px;z-index:50;background:var(--green);color:#f4edda;
+    border:1px solid #2c5e3a;border-radius:999px;padding:13px 19px;font-family:inherit;font-weight:600;
+    font-size:15px;box-shadow:0 8px 22px rgba(21,57,27,.42);cursor:pointer;display:none}
 
-  .empty{text-align:center;color:var(--muted);padding:46px 20px;font-size:14px}
-  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:30px 18px 10px;line-height:1.7}
-  footer a{color:#8c2a25;font-weight:600}
+  .empty{text-align:center;color:var(--muted);padding:48px 20px;font-size:15px;font-style:italic}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:32px 18px 12px;line-height:1.7}
+  footer a{color:var(--feest-i);font-weight:600}
+
+  /* ---- MAP / PLATTEGROND ---- */
+  #mapview{padding-top:6px}
+  .maphead{padding:16px 4px 8px}
+  .maphead h2{font-size:26px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .maphead p{font-size:13.5px;color:var(--muted);margin:5px 0 0;font-style:italic}
+  .maptools{display:flex;gap:8px;margin:12px 0 10px;flex-wrap:wrap}
+  .mbtn{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    padding:12px 14px;border-radius:12px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line2);background:var(--card);color:var(--ink)}
+  .mbtn.primary{background:var(--green);color:#f4edda;border-color:var(--green)}
+  .mbtn:disabled{opacity:.55}
+  .mapwrap{position:relative;overflow:auto;-webkit-overflow-scrolling:touch;
+    height:64vh;min-height:380px;border-radius:16px;border:1px solid var(--line2);
+    background:#e7ddc6;box-shadow:inset 0 1px 6px rgba(60,40,10,.08)}
+  .mapinner{position:relative;width:100%;transform-origin:0 0}
+  .mapinner img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+  .gpsdot{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;
+    background:#2b6cff;border:3px solid #fff;box-shadow:0 0 0 4px rgba(43,108,255,.3),0 2px 6px rgba(0,0,0,.4);
+    z-index:5}
+  .gpsdot::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid rgba(43,108,255,.5);
+    animation:gring 1.8s infinite}
+  @keyframes gring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+  .gpslabel{position:absolute;transform:translate(-50%,-150%);white-space:nowrap;
+    background:#2b6cff;color:#fff;font-family:-apple-system,sans-serif;font-size:10px;font-weight:700;
+    padding:3px 8px;border-radius:7px;z-index:6;letter-spacing:.03em}
+  .gpslabel::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:#2b6cff;border-bottom:0}
+  .mapzoom{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:6px;z-index:7}
+  .mapzoom button{width:42px;height:42px;border-radius:11px;border:1px solid var(--line2);
+    background:rgba(251,245,230,.95);font-size:22px;font-weight:600;cursor:pointer;color:var(--ink);
+    box-shadow:0 2px 8px rgba(60,40,10,.18);line-height:1}
+  .gpsstatus{margin:12px 2px 0;font-size:13.5px;color:var(--ink);line-height:1.5}
+  .gpsstatus b{font-weight:700}
+  .gpsstatus .muted{color:var(--muted);font-style:italic;font-size:12.5px}
+  .maplink{display:inline-block;margin-top:6px;color:var(--feest-i);font-weight:600;font-size:14px}
+  .hidden{display:none!important}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <img class="logo" src="logo.svg" alt="Down The Rabbit Hole 2026">
-  <div class="tagline">Fissa Planner</div>
-  <div class="dates serif">3 · 4 · 5 juli 2026 — De Groene Heuvels</div>
-  <div class="intro">De volledige timetable, ingedeeld op vibe. Kies je dag en je stemming —
+  <img class="logo" src="https://downtherabbithole.nl/img/bck/wOziS8zHgjNy1N2W7d39/Logo_dtrh_2025_wide.svg"
+       alt="Down The Rabbit Hole 2026"
+       onerror="this.outerHTML='&lt;div class=\'logo serif\' style=\'font-size:38px;font-weight:700;line-height:.95\'&gt;Down The<br>Rabbit Hole&lt;/div&gt;'">
+  <div class="rule"></div>
+  <div class="tagline kicker">Fissa Planner · 2026</div>
+  <div class="dates serif">3 · 4 · 5 juli — De Groene Heuvels, Bergharen</div>
+  <div class="intro">De volledige line-up, ingedeeld op vibe. Kies je dag en je stemming;
     de app springt vanzelf naar het moment van nu.</div>
 </div>
 
-<div class="controls">
+<nav class="topnav" id="topnav">
+  <button data-tab="prog" class="on"><span class="ic">♪</span>Programma</button>
+  <button data-tab="map"><span class="ic">⌖</span>Plattegrond</button>
+</nav>
+
+<div class="controls" id="controls">
   <div class="days" id="days"></div>
   <div class="vibes" id="vibes">
     <div class="chip on" data-v="all">Alles</div>
@@ -172,14 +228,46 @@
 </div>
 
 <div class="wrap">
-  <div class="count" id="count"></div>
-  <div id="list"></div>
-  <footer>
-    Vibe-indeling op basis van research per artiest.<br>
-    ☀️ <b>In de zon</b> · melodisch wegzweven &nbsp;—&nbsp; 🎉 <b>Feesten</b> · vrolijke upbeat feestmuziek &nbsp;—&nbsp; ⚡ <b>Ravennn</b> · zware club / rave<br>
-    Tik op ☆ om acts aan <b>Mijn lijst</b> te zetten. Tijden zijn indicatief — officieel
-    <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
-  </footer>
+  <!-- PROGRAMMA -->
+  <div id="progview">
+    <div class="count kicker" id="count"></div>
+    <div id="list"></div>
+    <footer>
+      Vibe-indeling op basis van research per artiest.<br>
+      ☀️ <b>In de zon</b> · melodisch wegzweven &nbsp;—&nbsp; 🎉 <b>Feesten</b> · vrolijke upbeat feestmuziek &nbsp;—&nbsp; ⚡ <b>Ravennn</b> · zware club / rave<br>
+      Tik op ☆ om acts aan <b>Mijn lijst</b> te zetten. Tijden zijn indicatief — officieel
+      <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
+    </footer>
+  </div>
+
+  <!-- PLATTEGROND -->
+  <div id="mapview" class="hidden">
+    <div class="maphead">
+      <h2 class="serif">Plattegrond</h2>
+      <p>Het festivalterrein op De Groene Heuvels. Zet je locatie aan om te zien waar je staat.</p>
+    </div>
+    <div class="maptools">
+      <button class="mbtn primary" id="gpsbtn"><span>⌖</span> Toon mijn locatie</button>
+      <a class="mbtn" id="navbtn" target="_blank" rel="noopener"
+         href="https://www.google.com/maps/dir/?api=1&destination=51.8499367,5.6970858">🧭 Navigeer</a>
+    </div>
+    <div class="mapwrap" id="mapwrap">
+      <div class="mapinner" id="mapinner">
+        <img id="mapimg" alt="DTRH 2026 plattegrond"
+             src="https://downtherabbithole.nl/img/cache/media_4602_original_85-DTRH26%20Totaal.webp">
+        <div class="gpslabel hidden" id="gpslabel">Jij (indicatief)</div>
+        <div class="gpsdot hidden" id="gpsdot"></div>
+      </div>
+      <div class="mapzoom">
+        <button id="zin" aria-label="Inzoomen">+</button>
+        <button id="zout" aria-label="Uitzoomen">−</button>
+      </div>
+    </div>
+    <div class="gpsstatus" id="gpsstatus">
+      <span class="muted">Locatie nog niet gedeeld. De stip is een indicatieve plek op de tekening —
+      gebruik <b>Navigeer</b> voor exacte route.</span>
+    </div>
+  </div>
 </div>
 
 <button id="nowbtn">⏱ Spring naar nu</button>
@@ -607,12 +695,116 @@ function jumpToNow(smooth){
   if(el) el.scrollIntoView({behavior:smooth?"smooth":"auto",block:"center"});
 }
 const nowbtn=document.getElementById("nowbtn");
-if(NOW.dayId){
-  nowbtn.style.display="block";
-  nowbtn.onclick=()=>{ if(state.day!==NOW.dayId){state.day=NOW.dayId;syncDays();render();} jumpToNow(true); };
+function updateNowBtn(){ nowbtn.style.display=(tab==="prog"&&NOW.dayId)?"block":"none"; }
+nowbtn.onclick=()=>{ if(state.day!==NOW.dayId){state.day=NOW.dayId;syncDays();render();} jumpToNow(true); };
+
+/* ===================== TABS ===================== */
+let tab="prog";
+const topnav=document.getElementById("topnav");
+const controls=document.getElementById("controls");
+const progview=document.getElementById("progview");
+const mapview=document.getElementById("mapview");
+topnav.querySelectorAll("button").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+function setTab(t){
+  tab=t;
+  topnav.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+  const prog=t==="prog";
+  controls.classList.toggle("hidden",!prog);
+  progview.classList.toggle("hidden",!prog);
+  mapview.classList.toggle("hidden",prog);
+  updateNowBtn();
+  window.scrollTo({top:0});
 }
 
+/* ===================== PLATTEGROND ===================== */
+const mapwrap=document.getElementById("mapwrap");
+const mapinner=document.getElementById("mapinner");
+const gpsdot=document.getElementById("gpsdot");
+const gpslabel=document.getElementById("gpslabel");
+const gpsstatus=document.getElementById("gpsstatus");
+const gpsbtn=document.getElementById("gpsbtn");
+
+let mapZoom=1; const Z_MIN=1, Z_MAX=6;
+function setZoom(nz, fx, fy){
+  nz=Math.max(Z_MIN,Math.min(Z_MAX,nz));
+  const w=mapwrap, focalX=fx==null?w.clientWidth/2:fx, focalY=fy==null?w.clientHeight/2:fy;
+  const ratioX=(w.scrollLeft+focalX)/mapinner.offsetWidth;
+  const ratioY=(w.scrollTop+focalY)/mapinner.offsetHeight;
+  mapZoom=nz; mapinner.style.width=(nz*100)+"%";
+  requestAnimationFrame(()=>{
+    w.scrollLeft=ratioX*mapinner.offsetWidth-focalX;
+    w.scrollTop =ratioY*mapinner.offsetHeight-focalY;
+  });
+}
+document.getElementById("zin").onclick =()=>setZoom(mapZoom*1.6);
+document.getElementById("zout").onclick=()=>setZoom(mapZoom/1.6);
+// pinch-to-zoom
+let pinch=null;
+mapwrap.addEventListener("touchstart",e=>{
+  if(e.touches.length===2){const a=e.touches[0],b=e.touches[1];
+    pinch={d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),z:mapZoom};}
+},{passive:true});
+mapwrap.addEventListener("touchmove",e=>{
+  if(pinch&&e.touches.length===2){e.preventDefault();
+    const a=e.touches[0],b=e.touches[1];
+    const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+    const r=mapwrap.getBoundingClientRect();
+    setZoom(pinch.z*(d/pinch.d),(a.clientX+b.clientX)/2-r.left,(a.clientY+b.clientY)/2-r.top);}
+},{passive:false});
+mapwrap.addEventListener("touchend",e=>{ if(e.touches.length<2) pinch=null; },{passive:true});
+
+/* GPS — calibratie is INDICATIEF (geen exacte georeferentie van de tekening) */
+const CAL={latTop:51.8540, latBot:51.8456, lngLeft:5.6900, lngRight:5.7040};
+const FEST={lat:51.8499367, lng:5.6970858};
+function frac(lat,lng){return {x:(lng-CAL.lngLeft)/(CAL.lngRight-CAL.lngLeft),
+                               y:(CAL.latTop-lat)/(CAL.latTop-CAL.latBot)};}
+function distKm(la1,lo1,la2,lo2){
+  const R=6371,toR=x=>x*Math.PI/180;
+  const dLa=toR(la2-la1),dLo=toR(lo2-lo1);
+  const h=Math.sin(dLa/2)**2+Math.cos(toR(la1))*Math.cos(toR(la2))*Math.sin(dLo/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+gpsbtn.onclick=()=>{
+  if(!navigator.geolocation){ gpsstatus.innerHTML="<span class='muted'>Geolocatie wordt niet ondersteund door deze browser.</span>"; return; }
+  gpsbtn.disabled=true; gpsbtn.innerHTML="<span>⌖</span> Locatie ophalen…";
+  navigator.geolocation.getCurrentPosition(onPos,onErr,{enableHighAccuracy:true,timeout:12000,maximumAge:20000});
+};
+function onPos(p){
+  gpsbtn.disabled=false; gpsbtn.innerHTML="<span>⌖</span> Ververs locatie";
+  const {latitude:lat,longitude:lng,accuracy}=p.coords;
+  const d=distKm(lat,lng,FEST.lat,FEST.lng);
+  const f=frac(lat,lng);
+  const onSite = d<1.3 && f.x>=0 && f.x<=1 && f.y>=0 && f.y<=1;
+  if(onSite){
+    gpsdot.style.left=(f.x*100)+"%"; gpsdot.style.top=(f.y*100)+"%";
+    gpslabel.style.left=(f.x*100)+"%"; gpslabel.style.top=(f.y*100)+"%";
+    gpsdot.classList.remove("hidden"); gpslabel.classList.remove("hidden");
+    if(mapZoom<2.2) setZoom(2.4);
+    requestAnimationFrame(()=>{
+      mapwrap.scrollLeft=f.x*mapinner.offsetWidth-mapwrap.clientWidth/2;
+      mapwrap.scrollTop =f.y*mapinner.offsetHeight-mapwrap.clientHeight/2;
+    });
+    gpsstatus.innerHTML="<b>📍 Je bent op het terrein.</b> De blauwe stip toont je plek "+
+      "<span class='muted'>(indicatief, ±"+Math.round(accuracy)+" m).</span>";
+  } else {
+    gpsdot.classList.add("hidden"); gpslabel.classList.add("hidden");
+    const txt = d<25 ? ("~"+d.toFixed(d<10?1:0)+" km van de ingang") : ("~"+Math.round(d)+" km hiervandaan");
+    gpsstatus.innerHTML="<b>Je bent nog niet op het terrein</b> — "+txt+".<br>"+
+      "<a class='maplink' target='_blank' rel='noopener' "+
+      "href='https://www.google.com/maps/dir/?api=1&destination=51.8499367,5.6970858'>🧭 Route naar Down The Rabbit Hole →</a>";
+  }
+}
+function onErr(e){
+  gpsbtn.disabled=false; gpsbtn.innerHTML="<span>⌖</span> Toon mijn locatie";
+  const msg = e.code===1 ? "Geen toestemming voor locatie. Sta locatie toe in je browser/telefoon."
+            : e.code===3 ? "Locatie ophalen duurde te lang, probeer opnieuw."
+            : "Kon je locatie niet bepalen.";
+  gpsstatus.innerHTML="<span class='muted'>"+msg+"</span>";
+}
+
+/* ===================== START ===================== */
 render();
+updateNowBtn();
 /* auto-spring naar nu bij openen tijdens festival */
 if(NOW.dayId===state.day){ requestAnimationFrame(()=>jumpToNow(false)); }
 </script>
