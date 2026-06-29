@@ -112,7 +112,7 @@
   /* ---- cards ---- */
   .card{display:flex;align-items:stretch;gap:12px;background:var(--card);
     border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin:9px 0;
-    position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(60,40,10,.05)}
+    position:relative;overflow:hidden;box-shadow:0 1px 2px rgba(60,40,10,.05);cursor:pointer}
   .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
   .card[data-v="zon"]::before{background:var(--zon)}
   .card[data-v="feest"]::before{background:var(--feest)}
@@ -158,6 +158,63 @@
   .empty{text-align:center;color:var(--muted);padding:48px 20px;font-size:15px;font-style:italic}
   footer{text-align:center;color:var(--muted);font-size:12px;padding:32px 18px 12px;line-height:1.7}
   footer a{color:var(--feest-i);font-weight:600}
+
+  /* ---- view toggle (Lijst / Blokken) ---- */
+  .viewbar{display:flex;justify-content:flex-end;align-items:center;padding:14px 2px 0}
+  .seg{display:inline-flex;background:var(--paper2);border:1px solid var(--line2);border-radius:11px;padding:3px}
+  .seg button{font-family:inherit;font-size:14px;font-weight:600;border:none;background:none;color:var(--muted);
+    padding:7px 16px;border-radius:8px;cursor:pointer}
+  .seg button.on{background:var(--green);color:#f4edda}
+
+  /* ---- blokkenschema (grid) ---- */
+  #grid{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border:1px solid var(--line2);
+    border-radius:14px;background:var(--card);margin-top:12px}
+  .tt-inner{position:relative}
+  .tt-row{display:flex;height:56px;border-bottom:1px solid var(--line)}
+  .tt-row:last-child{border-bottom:none}
+  .tt-head{height:30px}
+  .tt-label{flex:0 0 var(--labW);position:sticky;left:0;z-index:3;background:var(--paper2);
+    border-right:1px solid var(--line2);display:flex;align-items:center;padding:0 9px;
+    font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;line-height:1.05;
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+  .tt-track{position:relative;flex:0 0 auto}
+  .tt-tick{position:absolute;top:0;height:100%;border-left:1px solid var(--line);
+    font-size:10px;color:var(--muted);padding:8px 0 0 5px;font-family:-apple-system,sans-serif}
+  .blk{position:absolute;top:5px;bottom:5px;border-radius:9px;padding:6px 8px;overflow:hidden;cursor:pointer;
+    color:#fff;display:flex;flex-direction:column;justify-content:center;min-width:0}
+  .blk .bt{font-size:9px;opacity:.9;font-family:-apple-system,sans-serif;line-height:1.1}
+  .blk .bn{font-size:13px;font-weight:600;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .blk[data-v="zon"]{background:var(--zon)} .blk[data-v="feest"]{background:var(--feest)}
+  .blk[data-v="rave"]{background:var(--rave)} .blk[data-v="anders"]{background:var(--anders)}
+  .blk.dim{opacity:.26}
+  .blk.live{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--live)}
+  .tt-now{position:absolute;top:0;bottom:0;width:2px;background:var(--live);z-index:2}
+  .tt-now span{position:absolute;top:0;left:2px;font-size:8px;font-weight:800;color:#fff;background:var(--live);
+    padding:1px 4px;border-radius:0 3px 3px 0;font-family:-apple-system,sans-serif}
+  .gridhint{font-size:11.5px;color:var(--muted);font-style:italic;padding:8px 4px 0;text-align:center}
+
+  /* ---- artist detail sheet ---- */
+  .modal{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}
+  .modal .bd{position:absolute;inset:0;background:rgba(20,12,4,.5)}
+  .sheet{position:relative;width:100%;max-width:560px;background:var(--paper);border-radius:22px 22px 0 0;
+    border:1px solid var(--line2);border-bottom:none;padding:14px 20px calc(28px + env(safe-area-inset-bottom));
+    box-shadow:0 -12px 44px rgba(0,0,0,.28);animation:sheetup .22s ease;max-height:88vh;overflow-y:auto}
+  @keyframes sheetup{from{transform:translateY(40px)}to{transform:none}}
+  .sheet .grip{width:40px;height:4px;border-radius:3px;background:var(--line2);margin:2px auto 14px}
+  .sheet .mclose{position:absolute;right:13px;top:12px;border:none;background:none;font-size:27px;color:var(--muted);cursor:pointer;line-height:1}
+  .m-tag{display:inline-flex;align-items:center;gap:6px;font-family:-apple-system,sans-serif;font-size:10px;
+    font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 11px;border-radius:999px}
+  .m-tag.zon{background:var(--zon-s);color:var(--zon-i)} .m-tag.feest{background:var(--feest-s);color:var(--feest-i)}
+  .m-tag.rave{background:var(--rave-s);color:var(--rave-i)} .m-tag.anders{background:var(--anders-s);color:var(--anders-i)}
+  .m-name{font-size:31px;font-weight:600;line-height:1.04;margin:11px 0 5px;letter-spacing:-.015em}
+  .m-when{font-family:-apple-system,sans-serif;font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+  .m-genre{font-size:15px;font-style:italic;color:var(--ink);margin:10px 0 12px}
+  .m-desc{font-size:16.5px;line-height:1.6;color:var(--ink)}
+  .m-actions{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+  .m-actions a,.m-actions button{flex:1 1 auto;text-align:center;font-family:inherit;font-size:14.5px;font-weight:600;
+    padding:12px;border-radius:12px;border:1px solid var(--line2);background:var(--card);color:var(--ink);cursor:pointer;text-decoration:none}
+  .m-actions .sp{background:#1db954;color:#fff;border-color:#1db954}
+  .m-fav.on{background:var(--zon);color:#fff;border-color:var(--zon)}
 
   /* ---- MAP / PLATTEGROND ---- */
   #mapview{padding-top:6px}
@@ -230,8 +287,16 @@
 <div class="wrap">
   <!-- PROGRAMMA -->
   <div id="progview">
+    <div class="viewbar">
+      <div class="seg" id="viewseg">
+        <button data-view="list" class="on">Lijst</button>
+        <button data-view="grid">Blokken</button>
+      </div>
+    </div>
     <div class="count kicker" id="count"></div>
     <div id="list"></div>
+    <div id="grid" class="hidden"></div>
+    <div class="gridhint hidden" id="gridhint">Sleep horizontaal om door de dag te scrollen · tik op een act voor info</div>
     <footer>
       Vibe-indeling op basis van research per artiest.<br>
       ☀️ <b>In de zon</b> · melodisch wegzweven &nbsp;—&nbsp; 🎉 <b>Feesten</b> · vrolijke upbeat feestmuziek &nbsp;—&nbsp; ⚡ <b>Ravennn</b> · zware club / rave<br>
@@ -248,8 +313,6 @@
     </div>
     <div class="maptools">
       <button class="mbtn primary" id="gpsbtn"><span>⌖</span> Toon mijn locatie</button>
-      <a class="mbtn" id="navbtn" target="_blank" rel="noopener"
-         href="https://www.google.com/maps/dir/?api=1&destination=51.8499367,5.6970858">🧭 Navigeer</a>
     </div>
     <div class="mapwrap" id="mapwrap">
       <div class="mapinner" id="mapinner">
@@ -267,6 +330,20 @@
       <span class="muted">Locatie nog niet gedeeld. De stip wordt op de plattegrond gezet, geijkt op Het Meer —
       gebruik <b>Navigeer</b> voor de exacte route ernaartoe.</span>
     </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="bd" id="modalBd"></div>
+  <div class="sheet">
+    <div class="grip"></div>
+    <button class="mclose" id="mClose" aria-label="Sluiten">×</button>
+    <span class="m-tag" id="mTag"></span>
+    <h2 class="m-name serif" id="mName"></h2>
+    <div class="m-when" id="mWhen"></div>
+    <div class="m-genre" id="mGenre"></div>
+    <p class="m-desc" id="mDesc"></p>
+    <div class="m-actions" id="mActions"></div>
   </div>
 </div>
 
@@ -554,6 +631,213 @@ const META = {
   rave: {e:"⚡", t:"Ravennn",        s:"zware club & rave"},
   anders:{e:"💬",t:"Anders",         s:"talks, theater & workshops"},
 };
+/* ---- originele artiestbeschrijvingen (eigen research, niet overgenomen van dtrh) ---- */
+const DESC = {
+"Nederlands Philharmonisch Orkest":"Een van de toonaangevende symfonieorkesten van Nederland, gevestigd in Amsterdam en gewend aan de grote concertzalen. Op een popfestival is dat een verrassende combinatie: verwacht een ambitieuze, breed gedragen orkestrale show waarin klassieke grandeur en festivalsfeer samenkomen.",
+"Son Mieux":"Nederlandse indiepopband rond frontman Camiel Meiresonne, bekend om hun zonnige, melodieuze liedjes en grote refreinen. Live staan ze bekend als feestmakers met veel energie, koorzang en een aanstekelijke drang om het publiek mee te laten springen.",
+"CMAT":"Ierse singer-songwriter Ciara Mary-Alice Thompson maakt eigenzinnige, geestige country-pop vol scherpe teksten en grote melodieën. Op het podium is ze een charismatische en theatrale verschijning die humor, drama en emotie moeiteloos afwisselt.",
+"Empire of the Sun":"Australisch elektropopduo van Luke Steele en Nick Littlemore, beroemd om dromerige synthhits als 'Walking on a Dream'. Hun optredens zijn een uitbundig totaalspektakel met kleurrijke kostuums, dansers en visuals die je in een fantasiewereld trekken.",
+"Little Simz":"Britse rapper en artiest uit Noord-Londen die meermaals bekroonde, ambitieuze albums maakt waarin hiphop, soul en jazz samenkomen. Live brengt ze haar verhalende teksten met indrukwekkende precisie en een natuurlijke podiumautoriteit.",
+"Paradise Bangkok Molam International Band":"Thais collectief dat de hypnotiserende molam- en luk thung-traditie uit Noordoost-Thailand mixt met funk, dub en psychedelica. Hun shows zijn een dansbare, ronkende reis vol slingerende phin-gitaar en pulserende groove.",
+"Peaches":"Canadese elektroclash-pionier en provocateur die met rauwe elektronische beats en expliciete teksten genderrollen op de korrel neemt. Haar optredens zijn extravagant, brutaal en confronterend, vol theater, kostuums en pure podiumkracht.",
+"Zwangere Guy":"Brusselse rapper Gorik van Oudheusden, een van de grootste namen uit de Belgische hiphop, die in het Nederlands rauwe, persoonlijke en maatschappijkritische teksten brengt. Live staat hij bekend om zijn explosieve, zweterige en intense optredens.",
+"Tomora":"Nieuw elektronisch duo van Tom Rowlands (The Chemical Brothers) en de Noorse zangeres Aurora, dat etherische zang met stevige, big beat-achtige elektronica combineert. Verwacht een meeslepende, ritmische show waarin clubenergie en dromerige melodie samenkomen.",
+"De Staat":"Nederlandse rockband rond Torre Florim met een eigenzinnig, gelaagd geluid waarin rock, elektronica en groove samensmelten. Op het podium zijn ze een strakke, energieke machine die het publiek met aanstekelijke ritmes in beweging krijgt.",
+"De Staat Becomes De Staat":"Nederlandse rockband rond Torre Florim met een eigenzinnig, gelaagd geluid waarin rock, elektronica en groove samensmelten. Op het podium zijn ze een strakke, energieke machine die het publiek met aanstekelijke ritmes in beweging krijgt.",
+"Jacob Alon":"Schotse non-binaire singer-songwriter wiens intieme folk en dromerige dreampop persoonlijke, sprookjesachtige verhalen vertellen. Na de bekroonde debuutplaat 'In Limerence' brengt Alon live een kwetsbare, betoverende en zeer eigen wereld tot leven.",
+"Florence Road":"Iers indie-rockkwartet uit Bray dat opviel op de BBC Sound of 2026-lijst met aanstekelijke, gitaargedreven liedjes vol indie- en popgevoel. De vier vriendinnen brengen op het podium frisse, jeugdige energie en strakke samenzang.",
+"Mind Enterprises":"Italiaans project rond producer Andrea Tirone dat italo-disco, nu-disco en jaren-tachtig elektro combineert tot kleurrijke, dansbare indie-dance. Met vintage drumcomputers en synths levert hij een live, warm en nostalgisch dansfeest af.",
+"Kevin Morby":"Amerikaanse singer-songwriter uit Kansas City met een warme, literaire stijl die folk, rock en americana verweeft. Live brengt hij zijn melodieuze, ingetogen liedjes met een ontspannen maar betoverende podiumpresentatie.",
+"Apparat":"Het project van de Duitse producer Sascha Ring, die melodieuze, melancholische elektronica combineert met fragiele zang en filmische klankwerelden. In zijn liveband-vorm groeien de tracks uit tot meeslepende, emotionele en visueel sterke shows.",
+"Two Shell":"Mysterieus Brits elektronisch duo dat anoniem opereert en speelse, hyperactieve clubmuziek maakt vol verwrongen vocalen en glitchy beats. Hun optredens zijn onvoorspelbaar, met internetcultuur, humor en pure dansvloer-euforie als rode draad.",
+"Avalon Emerson":"Amerikaanse DJ en producer die als draaister bekendstaat om energieke, melodische sets en daarnaast dromerige elektronische popliedjes maakt. Verwacht een verfijnde, meeslepende clubervaring die techno, house en pop moeiteloos verbindt.",
+"Vasco":"Elektronische DJ en producer die thuis is in het diepere, broeierige spectrum van house en techno. In de REX-club van het festival levert hij een hypnotiserende, op de dansvloer gerichte set vol groove en opbouw.",
+"Lysah":"DJ en selector uit Nijmegen, resident bij onder meer Paak Vinyl, die opgroeide in Wenen en een breed elektronisch palet draait. Live neemt ze het publiek mee in eclectische, sfeervolle en op verbinding gerichte clubsets.",
+"Kim Josefine":"Opkomende Nederlandse DJ die deel uitmaakt van het elektronische REX-programma van het festival. Verwacht een dansbare clubset waarin house en techno met gevoel voor sfeer en ritme worden aaneengeregen.",
+"Kareem Ali":"Producer en DJ uit Phoenix die diepe, soulvolle house verweeft met afrofuturisme, jazz en maatschappijkritiek. Zijn enorm productieve oeuvre vertaalt zich live in warme, ruimtelijke en spiritueel geladen elektronische sets.",
+"Ash Lauryn":"In Detroit geboren, in Atlanta gevestigde DJ en schrijver die met haar Underground & Black-project de zwarte wortels van house en techno koestert. Live draait ze soulvolle, klassieke house met diepgang en gevoel voor geschiedenis.",
+"Eycee":"Amsterdamse producer en DJ die in zijn sets house, jersey club, jungle, UK garage, techno en bass moeiteloos door elkaar mixt. Als oprichter van clubavonden als PARDON brengt hij een vooruitstrevende, energieke en clubgerichte show.",
+"Tom Trago":"Vooraanstaande Amsterdamse DJ en producer en een vaste waarde in de Nederlandse housescene. Op het podium staat hij bekend om warme, eclectische en aanstekelijke sets die house, disco en alles daartussenin omarmen.",
+"Bella":"Amsterdamse DJ die opgewekte house mixt met jaren-negentig-nostalgie en vleugen acid, breakbeat en progressive. Met haar clubnacht PALET in Paradiso brengt ze een uplifting, melodieuze en energieke dansvloerervaring.",
+"Amaliah":"In Londen gevestigde DJ en producer, oprichter van label en clubreeks Borne Fruits, die energieke sets vol house, techno en soundsystem-percussie draait. Live levert ze een stuwende, ritmische en op de dansvloer gerichte show.",
+"Niks":"Autodidacte DJ en producer en medeoprichter van de Black Artist Database, met een geluid dat UK-percussie en groovy jaren-negentig/nul invloeden samenbrengt. Haar reisachtige sets bewegen soepel tussen bas-zware energie en dubby, downtempo sferen.",
+"Doppelgang":"Elektronisch house-duo dat als identieke tweeling opereert en gretig de dansvloer opzoekt. In de late uren van de REX-club leveren ze een stuwende, hypnotiserende set die het publiek tot in de vroege ochtend in beweging houdt.",
+"Roda da Holanda":"Roda da Holanda brengt de Braziliaanse roda de samba naar Nederland, met muzikanten die rond een tafel spelen terwijl het publiek eromheen meedeint. Met authentieke instrumenten en aanstekelijke ritmes is het een warme, feestelijke samba-ervaring.",
+"Sèsè":"Sèsè is een dj uit Arnhem met een eclectische crate-digger-stijl die van Afrikaanse diaspora-platen tot harde rave-knallers reikt. Live gaan haar sets breed en diep, dwars door genres en tempo's heen.",
+"Faisal":"Faisal is een dj en producer uit Antwerpen die een solo-dj-set draait, geworteld in hiphop, soul en house. Verwacht een soepele, groovy selectie met clubgevoel.",
+"Onda Collective":"Onda Collective is een Amsterdams dj-collectief dat Braziliaanse en Afro-Latijnse roots verbindt met rauwe underground clubcultuur. Live draaien ze een energieke, dansvloergerichte set vol percussie en groove.",
+"Yůsu":"Yůsu is een dj uit Amsterdam met Ghanese wortels die verhalen, ritmes en hypnotiserende melodieën verweeft tot meeslepende sets. Verwacht een sfeervolle, opbouwende reis over de dansvloer.",
+"Bronka":"Bronka is een Braziliaanse dj en producer met een high-energy geluid rond Braziliaanse elektronica en global club. Live gaat ze hoog in tempo, stuwend en feestelijk.",
+"Sim-Oj":"Sim-Oj is een Nederlandse producer en dj die beats maakte voor onder anderen S10 en Dio. Live draait hij swingende, clubgerichte sets met een hiphop-hart.",
+"Chinnamasta":"Chinnamasta is een dj en geluidsexperimentalist uit Amsterdam met percussiegedreven sets rond Caribische riddims en wereldritmes. Verwacht een dansbare set die soepel door tempo's en culturen beweegt.",
+"Nems":"Nems is een opkomende dj uit Rotterdam die schuift tussen broeierige dancehall, amapiano, afrobeats en rap-edits. Live brengt ze bas-zware, ritmische clubsets.",
+"Lamsi":"Lamsi is een Amsterdamse dj met Surinaamse roots en een genrevrij geluid uit de Afro-diaspora: bass, breaks, kawina, grime en een Caribische draai aan UK garage. Een Boiler Room-favoriet die laat op de avond knalt.",
+"Adam Quartet + Kika Sprangers":"Saxofoniste Kika Sprangers en het ADAM strijkkwartet brengen een verfijnde kruisbestuiving van klassiek en jazz. Verwacht lyrische composities en improvisatie waarin strijkers en saxofoon samensmelten tot een ingetogen luisterconcert.",
+"Dermot Henry":"Dermot Henry is een singer-songwriter die op het zonnige middagpodium ingetogen, melodieuze liedjes brengt. Verwacht een rustige, sfeervolle set vol akoestische warmte.",
+"Girl Group":"Girl Group is een internationale, vrouwelijke band (Oslo en Yorkshire, gevormd in Liverpool) die speelse, energieke post-punk en alt-pop speelt. Live wisselen ze instrumenten, choreografie en sarcastische samenzang af met veel lol.",
+"La Niña":"La Niña is het project van de Italiaanse zangeres Carola Moccia uit Napels, die Napolitaanse folklore mengt met hedendaagse pop en urban. Live is het theatrale, moderne mediterrane pop, gezongen in het Napolitaans, Italiaans en Engels.",
+"Queenie":"Queenie is een Londense zangeres en producer die UK garage combineert met house, R&B en jazz. Live zingt ze met fluweelzachte stem over haar eigen dansbare, garage-getinte producties.",
+"Jason":"Jason is een Amsterdamse dj en selector met een voorliefde voor uptempo electro en clubdance vol ritme en bounce. Verwacht een energieke, late-night dj-set.",
+"Youngwoman":"Youngwoman is een Egyptische, in Amsterdam gevestigde dj, producer en mede-oprichter van het T4T-collectief. Live brengt ze intense, hoog-energetische sets vol dubstep, gabber en rave-knallers.",
+"Hondenfokker":"Hondenfokker is een rave-punktrio uit Amsterdam dat punk, electropop en humor combineert. Hun shows zijn uitgelaten, brutaal en vol feestelijke energie.",
+"Femme Fugazi":"Femme Fugazi is een post-punkact uit Nijmegen met een rauwe, gitaargedreven sound en een eigenzinnige zangstijl. Live brengen ze scherpe, intense post-punk in een korte, felle set.",
+"Juny Martina":"Juny Martina is een Curaçaose rapper die Papiamentstalige hiphop mengt met traditionele Curaçaose stijlen als Seú en Tambú, plus jazz. Live brengt ze cinematische, maatschappijkritische hiphop vol gevoel.",
+"Kaat van Stralen":"Kaat van Stralen is een Belgische band rond zangeres Kaat van Stralen die punk, psychedelica en spoken word in het Vlaams combineert. Live zijn ze feministisch, rauw en energiek, met een eigenzinnige 'kleinkunst-punk'-stijl.",
+"Nachttrein":"Nachttrein is geen los optreden maar een nachtelijk dansprogramma, een 'sneltrein richting zonsopkomst'. Verwacht uiteenlopende dj's en acts, van punk tot happy hardcore, diep in de nacht.",
+"Torus":"Torus is het experimentele elektronische project van Joep Schmitz uit Den Haag. Live mengt hij ambient, techno en trance tot meeslepende, genre-overstijgende clubsets.",
+"Jacob Dwyer":"Jacob Dwyer is een Britse geluidskunstenaar die ambient soundscapes bouwt uit veldopnames van over de hele wereld. Verwacht een contemplatief, sfeervol luisteroptreden in het bos.",
+"Merely":"Merely is het dreampop-project van de Zweedse Kristina Florell uit Stockholm. Live brengt ze etherische, gelaagde popliedjes vol zwevende vocalen en organische klanken.",
+"Nexcyia":"Nexcyia is een in Berlijn gevestigde, Amerikaanse geluidskunstenaar die texturale ambient en noise combineert tot immersieve soundscapes. Live balanceert hij tussen ruige ruis en zwevende sfeer.",
+"Joleidy's Reprieve":"Joleidy's Reprieve is een intiem, stemgericht optreden binnen het 'Voice as Landscape'-programma van het festival. Verwacht een experimentele, kwetsbare performance waarin de menselijke stem centraal staat.",
+"Marathon Man":"Marathon Man is het dj-alias van Dominik Rodemann, oprichter van het label South of North. Zijn eclectische sets graven door ambient, dub, garage rock, noise en hiphop.",
+"La Rat":"La Rat is een Nederlands experimenteel hiphop-duo dat pitched vocalen over stoffige, Madlib-achtige beats legt. Live brengen ze lo-fi, leftfield hiphop met eigenzinnige sfeer.",
+"Ojoo":"Ojoo is een Marokkaans-Brusselse dj en selector met zware, fysieke bass-sets die vreemd en genre-overstijgend zijn. Verwacht een rauwe, energieke en eigenzinnige clubervaring.",
+"A View of the Rabbit's Nest":"Een doorlopend festivalonderdeel van Down The Rabbit Hole zelf, met dj-sets, verrassingen en sfeervolle randactiviteiten verspreid over de dag. Verwacht losse, dansbare momenten die de gaten tussen de grote optredens vullen.",
+"Discos Horizontes":"Discos Horizontes is een dj-concept dat draait om wereldwijde platenschatten: cumbia, afrobeat, tropische disco en vergeten grooves van alle continenten. Live brengen ze een warme, zonnige dansvloer vol ontdekkingen op vinyl.",
+"Jamaican Jukebox":"Jamaican Jukebox is een dj-set volledig gewijd aan Jamaicaanse muziek, van vintage ska en rocksteady tot roots reggae en dub. Verwacht een soundsystem-sfeer met diepe baslijnen en aanstekelijke offbeat-ritmes.",
+"Discos Horizontes & Jamaican Jukebox":"Een dubbel dj-concept dat wereldwijde platenschatten (cumbia, afrobeat, tropische disco) combineert met pure Jamaicaanse muziek van ska tot dub. Samen zorgen ze voor een zonnige, dansbare soundsystem-sfeer.",
+"Club Coco":"Club Coco is een internationaal clubconcept en label rond grensoverschrijdende dansmuziek, dat global beats, tropische elektronica en eclectische clubsounds samenbrengt. Live levert het een energieke, genre-overstijgende dj-ervaring met invloeden van over de hele wereld.",
+"Thee Sacred Souls":"Thee Sacred Souls is een trio uit San Diego dat klassieke sweet soul en lowrider-oldies in een eigentijds jasje giet, met fluweelzachte vocalen en warme, retro arrangementen. Live klinken ze als een tijdmachine naar de jaren zestig, vol smeulende slow jams.",
+"Sierra Ferrell":"Sierra Ferrell is een Amerikaanse singer-songwriter uit West Virginia die americana, bluegrass, country en oude folk mengt met een theatrale, nostalgische flair. Haar live shows zijn kleurrijk en charismatisch, gedragen door haar opvallende, expressieve stem.",
+"The Last Dinner Party":"The Last Dinner Party is een Britse band die dramatische baroque-pop met indierock combineert tot grootse, theatrale liedjes. Hun optredens zijn uitbundig en visueel rijk, met sterke melodieën en een gevoel voor spektakel.",
+"Dabeull":"Dabeull is een Franse producer en muzikant die de geest van jaren-tachtig boogie, funk en synth-soul nieuw leven inblaast met strakke basgrooves en vintage analoge sounds. Live brengt hij een glimmende, dansbare retro-funkshow.",
+"David Byrne":"David Byrne is de legendarische frontman van Talking Heads en een veelzijdig solo-artiest die artrock, new wave en wereldmuziek combineert met conceptuele podiumkunst. Zijn optredens staan bekend om hun inventieve choreografie en onverwachte theatrale presentatie.",
+"The xx":"The xx is een Britse band die ingetogen indiepop en elektronica maakt met fluisterende mannelijke en vrouwelijke zang en veel ruimte tussen de noten. Live creëren ze een intieme, broeierige sfeer met minimalistische beats en sfeervolle lichtshows.",
+"Arp Frique":"Arp Frique is het project van de Nederlandse producer Niels Nieuborg, dat funk, disco, boogie en Caribische en Afrikaanse invloeden samensmelt rond warme analoge synthesizers. Live is het een uitbundig collectief dat de dansvloer met tropische grooves laat koken.",
+"Arp Frique & the Perpetual Singers":"Arp Frique brengt samen met The Perpetual Singers een uitbundige liveband vol funk, disco en Caribische en Afrikaanse grooves rond warme analoge synths. Live laten ze met aanstekelijke koorzang de dansvloer koken.",
+"All Them Witches":"All Them Witches is een Amerikaanse band uit Nashville die psychedelische rock, blues en zware stonerklanken in lange, hypnotiserende jams gevangen houdt. Live bouwen ze trage, broeiende nummers op tot meeslepende, dampende crescendo's.",
+"Johnny Marr":"Johnny Marr is de iconische gitarist van The Smiths en een gevierd solo-artiest met een herkenbare, melodieuze gitaarstijl die de Britse indierock vormgaf. Live trakteert hij op zowel eigen werk als klassiekers, gedreven door zijn rinkelende riffs.",
+"Oklou":"Oklou is een Franse zangeres en producer die etherische pop combineert met experimentele elektronica en dromerige, fragiele vocalen. Haar optredens zijn sfeervol en intiem, balancerend tussen clubmuziek en zwevende ambient.",
+"Joy Crookes":"Joy Crookes is een Britse singer-songwriter uit Zuid-Londen die neo-soul, R&B en pop mengt met eerlijke, persoonlijke teksten. Haar warme, soulvolle stem komt live volledig tot zijn recht in gevoelige, krachtige liedjes.",
+"¥ØU$UK€ ¥UK1MAT$U":"Yousuke Yukimatsu is een Japanse dj uit Osaka die bekendstaat om zijn grensverleggende, onvoorspelbare sets vol gabber, techno, experimentele en emotionele wendingen. Live mixt hij genres met grote durf en intensiteit voor een meeslepende clubreis.",
+"Folk Bitch Trio":"Folk Bitch Trio is een Australisch drietal dat indiefolk maakt met prachtige, verweven driestemmige harmonieën en eerlijke, soms rauwe teksten. Live draait het om kwetsbare close harmony en akoestische intimiteit met scherpe humor.",
+"Midnight Generation":"Midnight Generation is een band uit het noorden van Mexico die nu-disco, synthpop en funk samenbrengt in een warme, retro-getinte sound. Live leveren ze een dansbare, vrolijke show vol groove en zonnige vibes.",
+"Genesis Owusu":"Genesis Owusu is een Australisch-Ghanese artiest die hiphop, funk, punk en soul ongeremd door elkaar gooit met een rauwe, energieke flow. Zijn optredens zijn explosief en theatraal, vol beweging en onvoorspelbare energie.",
+"Westside Cowboy":"Westside Cowboy is een opkomende band uit Manchester die indierock met americana en country verweeft tot wat ze zelf 'Britainicana' noemen. Live brengen ze meeslepende, melodieuze gitaarliedjes met een nostalgisch randje.",
+"Baxter Dury":"Baxter Dury is een Britse artiest, zoon van Ian Dury, die spoken-word en gesproken cockney-vocalen combineert met stijlvolle, cinematische pop-arrangementen. Live is hij scherp, ironisch en charismatisch, met een geheel eigen Britse flair.",
+"The Mary Wallopers":"The Mary Wallopers is een Iers collectief dat traditionele folk en rebel songs met punky energie en ruige humor opnieuw tot leven brengt. Hun optredens zijn luidruchtig, meezingbaar en feestelijk, alsof de pub het podium overneemt.",
+"Moxes":"Moxes is een opkomend elektronisch project dat dansbare clubmuziek met eigentijdse pop- en bass-invloeden combineert. Live brengt het een energieke, late-night dj-set gericht op de dansvloer.",
+"Narciss":"Narciss is een dj en producer wiens werk draait om de spanning tussen pijn en plezier, vertaald naar duister gekleurde techno en house. Live brengt Narciss krachtige, expressieve clubsets vol intensiteit en emotie.",
+"DJ Boring":"DJ Boring is een Australische producer en dj die naam maakte met nostalgische lo-fi house en sindsdien een breed palet aan dansbare elektronica bestrijkt. Live serveert hij toegankelijke, groovy sets die het publiek moeiteloos aan het dansen krijgen.",
+"Jannah":"Jannah is een in Utrecht gevestigde dj met een scherp oor voor underground elektronica, geworteld in vroege house, electro, acid en techno. Haar sets zijn rauw, eigenzinnig en onvoorspelbaar, met residencies bij onder meer Operator en RRFM.",
+"Zohar":"Zohar is een in Amsterdam gevestigde dj en producer die zich beweegt in de undergroundscene met clubgerichte, eclectische elektronica. Live brengt Zohar dansbare, sfeervolle sets met een persoonlijke, eigenzinnige smaak.",
+"Croatian Amor":"Croatian Amor is het soloproject van de Deense kunstenaar Loke Rahbek, dat ambient, experimentele elektronica en vervormde vocalen tot dromerige, vervreemdende soundscapes vormt. Live is het een meeslepende, sferische audiovisuele ervaring.",
+"Vegyn":"Vegyn is een Britse producer die elektronica, ambient, breakbeat en glitchy pop combineert tot fijnzinnige, emotionele klankwerelden. Live levert hij verfijnde, dynamische sets die schuiven tussen clubenergie en introspectie.",
+"Verity":"Verity is een dj die zich beweegt in de underground elektronische scene met dansbare, clubgerichte sets. Live brengt Verity een energieke mix van house en techno voor de late uurtjes.",
+"Nick León":"Nick León is een producer en dj uit Miami die clubmuziek versmelt met Latijns-Amerikaanse stijlen als reggaeton, dembow en guaracha tot een broeierig, tropisch geluid. Live bouwt hij hypnotiserende, bas-rijke sets op die de dansvloer langzaam laten oplopen.",
+"Pariah":"Pariah is de Britse producer Arthur Cayzer, ook bekend als helft van het analoge technoduo Karenn, met een achtergrond in bass en UK garage. Zijn sets zijn rauw en stuwend en bewegen tussen breakbeats, techno en clubmuziek met een vette low-end.",
+"Ciel":"Ciel is een in Toronto gevestigde, van origine Chinese dj en producer die bekendstaat om kleurrijke, melodische sets vol breakbeat, trance, house en electro. Haar optredens zijn energiek en optimistisch, met veel ruimte voor euforische, dromerige momenten.",
+"Upsammy":"Upsammy is de Nederlandse producer Thessa Torsing, die elektronica maakt waarin glasheldere texturen, ambient en gebroken ritmes samenkomen. Live trekt ze de luisteraar een gedetailleerde, bijna natuurlijke klankwereld in die voortdurend van vorm verandert.",
+"Gyrofield":"Gyrofield is een jonge producer uit Hongkong die genres als drum-and-bass, neurofunk en experimentele bass moeiteloos door elkaar weeft. Verwacht een technisch indrukwekkende, snelle en compromisloze set die voortdurend de grenzen van clubmuziek opzoekt.",
+"Tienson":"Tienson is een dj en percussionist uit de Rotterdamse scene (en lid van Jungle by Night) met een eclectische, mondiale selectie. Live reist hij langs Ethio-funk, cumbia, dub, disco en house in verrassende, soulvolle sets.",
+"Marla Kether":"Marla Kether is een Britse bassiste, producer en bandleider met Congolese roots die jazz, broken beat, soul, batida en clubmuziek combineert. Ze toerde als bassist met Loyle Carner en Little Simz; live zijn haar sets diep ritmisch en bruisend.",
+"Galecta":"Galecta is een baile funk-dj en producer uit Manaus (Brazilië), nu actief in Rotterdam. Live draait ze hoog-energetische, percussieve Braziliaanse funk vol diaspora-energie.",
+"C.Frim":"C.Frim is een dj uit Melbourne met Ghanees-Filipijnse roots die urgente global club draait: dancehall, afro-electronic, amapiano en bass. Live zijn haar sets bas-zwaar, energiek en vol rewinds.",
+"DJ Travella":"DJ Travella is een jonge producer uit Dar es Salaam (Tanzania) die de lokale singeli-stijl combineert met hyperkinetische, vervormde elektronica in razend tempo. Zijn sets zijn explosief, chaotisch en ongekend snel.",
+"Hibotep":"Hibotep is een Somalisch-Ethiopische dj en multidisciplinaire artiest (verbonden aan Nyege Nyege) die clubmuziek mengt met Afrikaanse ritmes, rap en experimentele elektronica. Live levert ze grensoverschrijdende, energieke sets vol verrassende wendingen.",
+"Turbolenta":"Turbolenta is een dj van Marokkaans-Algerijnse afkomst, gevestigd in Italië, die Noord-Afrikaanse en Arabische tradities versmelt met clubcultuur. Haar sets zijn snel, kleurrijk en gemaakt om de dansvloer te laten ontploffen.",
+"DJ Babatr":"DJ Babatr is een pionier uit Caracas (Venezuela) en grondlegger van de 'raptor house' (changa tuki), met snelle, frenetieke Afro-Venezolaanse percussie en blaffende synths. Live brengt hij een aanstekelijke, hoog-energetische dansvloerexplosie.",
+"Djuwa Mroivili":"Djuwa Mroivili is een Comorees-Nederlandse kunstenaar en klassiek geschoolde pianiste uit Amsterdam. Haar performance verbindt klassieke piano met queer, Comorese en antikoloniale thema's tot een eigenzinnig, theatraal optreden.",
+"Lumï":"Lumï is een Nederlands duo dat intieme, breekbare singer-songwriterpop maakt rond fijne tweestemmige harmonieën en gitaar. Live klinken ze sfeervol en kwetsbaar, met subtiele elektronische randjes.",
+"Frans Kalf":"Frans Kalf is een Nederlandstalige singer-songwriter uit het Amsterdams-Gentse circuit met poëtische, cynisch-vrolijke teksten. Live brengt hij ingetogen 'kampvuurpop' in de traditie van Maarten van Roozendaal en Ramses Shaffy.",
+"Madalitso Band":"Madalitso Band is een duo uit Lilongwe (Malawi) dat zelfgebouwde instrumenten zoals de babatoni-basgitaar bespeelt in een aanstekelijke straatmuziekstijl. Live brengen ze ongekunstelde, ritmische en bijzonder dansbare folk.",
+"Stay Away from Dante!":"Stay Away from Dante! is het project van Emmanuel Adomah Boateng uit Amsterdam-Zuidoost, die dromerige, persoonlijke pop, R&B en soul maakt. Live klinkt het warm en melodieus, deels in het Nederlands gezongen.",
+"Alice Olsthoorn":"Alice Olsthoorn is een Nederlandse dj en producer die zichzelf de 'hyperpop-prinses' noemt en hyperpop met clubmuziek mengt. Haar shows zijn theatraal, extravagant en hoog-energetisch, geworteld in de queer ravecultuur.",
+"DJ Shahmaran":"DJ Shahmaran is een Rotterdamse dj en een vaste waarde in de queer-scene, met bas-zware sets vol breaks, deconstructed club en leftfield techno. Live schakelt ze van rauwe rave naar glitchy, emotionele clubcuts.",
+"Toccororo":"Toccororo is een Cubaans-Spaanse dj (Canarische Eilanden, nu Barcelona) met hoog-energetische sets vol hardstyle, acid en raptor house. Live is het eclectisch, hard en explosief.",
+"Mayo":"Mayo is een dj in het late clubprogramma van het festival. Verwacht een energieke, dansbare set in de kleine uurtjes.",
+"Maha":"Maha is een Soedanese muzikant, model en activist met opzwepende, uptempo punk en post-punk. Live brengt ze een rauwe, strijdbare en energieke show.",
+"Clitte-Band":"Clitte-Band is een riot grrrl punkband uit Hilversum: jong, feministisch, queer en luid, met een surfy, ska-getinte sound. Live zijn ze uitbundig, fel en aanstekelijk.",
+"Dear Omen":"Dear Omen is een gothic rock-trio uit Amsterdam met diepe orgels, grommende bas en dramatische zang tussen krautrock en new wave. Live brengen ze een donkere, intense en meeslepende show.",
+"Hypnosis Therapy":"Hypnosis Therapy is een Zuid-Koreaans duo uit de Seoulse underground dat breakbeats, techno, punk en experimentele texturen combineert. Live is het hoog-energetisch, hypnotiserend en politiek geladen.",
+"Glinted Records w/ Nessim & Gateless":"Een labelshowcase van het Amsterdamse Glinted Records: Nessim duikt in de waterige, ruimtelijke kant van ambient, breaks en bass, terwijl Gateless gelaagde ambient, trip-hop en dub-techno brengt. Samen een experimentele, sfeervolle clubavond.",
+"Refreshers: Gizem Öz":"Gizem Öz is een Amsterdamse geluidskunstenaar en dj die hypnotiserende, emotioneel gedreven clubmuziek maakt op het snijvlak van club en galerie. Live bouwt ze sfeervolle, dubby en diepe sets op.",
+"Orpheu the Wizard":"Orpheu the Wizard is een gevierde Amsterdamse dj, mede bekend van Red Light Radio en Rush Hour, met een schier grenzeloze platenkennis. Zijn sets zijn eclectisch en avontuurlijk en bewegen vrij tussen disco, house, wereldmuziek en meer.",
+"Farida Amadou":"Farida Amadou is een Belgische bassiste die zich vooral toelegt op vrije improvisatie, noise en experimentele muziek. Live levert ze rauwe, fysieke en compromisloze optredens waarin de elektrische bas tot het uiterste wordt gedreven.",
+"Berton":"Berton is een Amsterdamse dj en soundscape-artiest gericht op de etherische, diepe kant van elektronische muziek. Live brengt hij sfeervolle, stuwende techno.",
+"Lazergazer":"Lazergazer is het dj-alias van Hala Namer, resident bij Garage Noord in Amsterdam. Haar sets zijn snel en dansvloergericht, vol breaks en bass.",
+"Studentenkoor Alphons Diepenbrock":"Dit Nijmeegse studentenkoor brengt klassiek koorrepertoire met jeugdig elan en een breed scala aan stemmen. Verwacht een sfeervol, akoestisch optreden dat het festival even onderdompelt in meerstemmige zang.",
+"Naaz":"Naaz is een Nederlandse singer-songwriter van Koerdische afkomst die kleurrijke, knuffelbare pop maakt vol persoonlijke teksten en eigenzinnige productie. Live blinkt ze uit in warme, energieke shows waarin haar heldere stem centraal staat.",
+"Naaz: The Sky Knows I Exist":"Naaz is een Nederlandse singer-songwriter van Koerdische afkomst die kleurrijke, persoonlijke pop maakt met eigenzinnige productie. In deze show staan haar heldere stem en aanstekelijke enthousiasme centraal.",
+"Beirut":"Beirut is het muzikale project van de Amerikaan Zach Condon, die indiefolk vermengt met Balkan-blaasmuziek, ukelele en weemoedige melodieën. Op het podium klinkt de band warm en orkestraal, met trompetten en accordeon die een nostalgische sfeer oproepen.",
+"IJsland":"IJsland is een Nederlandstalig gitaarproject dat melancholische indierock combineert met poëtische, soms wrange teksten. Live klinkt de band rauw en meeslepend, met opbouwende nummers tussen ingetogenheid en uitbarsting.",
+"Loyle Carner":"Loyle Carner is een Britse rapper die jazzy, ingetogen hiphop maakt vol kwetsbare, persoonlijke teksten over familie en identiteit. Zijn optredens zijn warm en intiem, gedragen door live instrumenten en een ontwapenende podiumpresentatie.",
+"Florence + the Machine":"Florence + the Machine is de Britse band rond zangeres Florence Welch, bekend om grootse, theatrale art-rock met baroke arrangementen en haar krachtige stem. Live levert ze hypnotiserende, bijna rituele shows af, barrevoets en vol overgave.",
+"Kin'Gongolo Kiniata":"Kin'Gongolo Kiniata uit Kinshasa maakt rauwe, experimentele elektro-Congolese punk op zelfgebouwde instrumenten van plastic en schroot. Hun shows zijn een explosie van energie, met aanstekelijke ritmes en strijdbare teksten in het Lingala.",
+"Harry Mack":"Harry Mack is een Amerikaanse freestylerapper die hele optredens improviseert op basis van willekeurige woorden uit het publiek. Live is hij een verbluffende showman die ter plekke complete rijmverhalen verzint.",
+"Charlotte Cardin":"Charlotte Cardin is een Canadese zangeres uit Montreal die soulvolle pop maakt met jazzy ondertonen en een rokerige, gevoelige stem. Op het podium combineert ze elegantie met emotie in sfeervolle, broeierige optredens.",
+"Matt Berninger":"Matt Berninger is de bariton-zanger van The National, hier solo met zijn eigen ingetogen, literaire indierock. Live valt hij op door zijn warme, donkere stem en zijn intense, soms ontregelende podiumaanwezigheid.",
+"Overmono":"Overmono is een Brits broederduo dat emotionele dance maakt op het snijvlak van house, breakbeat en UK garage met flarden vervormde vocalen. Hun liveshows zijn meeslepend en visueel sterk, met diepe baslijnen en euforische opbouw.",
+"De Nachtwacht":"De Nachtwacht is een Nederlands hardcore- en gabbercollectief dat het keiharde geluid van de Nederlandse rave omarmt. Verwacht een meedogenloze, snelle en uitbundige late-night set vol stevige kicks.",
+"Derya Yıldırım & Grup Şimşek":"Derya Yıldırım & Grup Şimşek mengen Turkse psychedelische folk met funk en krautrock, gedragen door Derya's stem en de hypnotiserende klanken van de saz. Live ontvouwen hun nummers zich in lange, groovende jams vol oosterse melodieën.",
+"Claw Boys Claw":"Claw Boys Claw is een legendarische Nederlandse rockband die al decennia rauwe, bluesy garagerock speelt met een gevaarlijke rand. Live zijn ze ongepolijst en vol vuur, met een charismatische frontman en gitaren die naar de strot grijpen.",
+"Deki Alem":"Deki Alem is een Zweedse band rond een tweeling met Eritrese en Ghanese roots die punk-getinte trip-hop maakt vol drum-'n-bass, rap en grunge. Live levert het kwartet een intens, rauw en aanstekelijk optreden af.",
+"Panic Shack":"Panic Shack is een Welsh vrouwenkwintet dat snelle, brutale postpunk speelt met scherpe humor en feministische teksten. Hun shows zijn uitgelaten en aanstekelijk, vol energie en een do-it-yourself-houding.",
+"Malou":"Malou is een Nederlandse dj uit het EKKO-circuit die clubmuziek draait met poppy hooks, italo, electro en synthpop. Live serveert ze speelse, energieke sets die de dansvloer warm en melodieus laten bewegen.",
+"Gerd Janson":"Gerd Janson is een Duitse dj en producer, oprichter van het label Running Back, bekend om zijn brede, smaakvolle selecties tussen house, disco en techno. Live staat hij bekend om lange, vakkundig opgebouwde sets.",
+"Hunee":"Hunee is een Berlijnse dj met Koreaanse wortels, geliefd om zijn grensoverschrijdende selecties van disco, house, afro en obscure platen. Zijn sets zijn warm, eclectisch en vol verrassingen.",
+"Paak Listening Club":"Paak Listening Club komt voort uit de Nijmeegse luisterbar PAAK, met dj's en selectors die hun mooiste vinylplaten draaien. Verwacht een sfeervolle, op luisteren gerichte set van ingetogen groove tot dansbare verrassingen.",
+"Gizem":"Gizem Öz is een Nederlandse dj die energieke clubmuziek draait met een eclectische, dansbare insteek. Live brengt ze een aanstekelijke set vol drive, die het publiek vroeg op de dag al in beweging krijgt.",
+"Luna Ludmila":"Luna Ludmila is een dj en producer uit Utrecht met twee decennia ervaring en een voorliefde voor gelaagde klanken en complexe ritmes. Live levert ze diepe, hypnotiserende sets tussen techno en experiment.",
+"Hervé":"Hervé is een Britse dj, producer en labelbaas van Cheap Thrills, bekend om zijn basgedreven clubmuziek met invloeden uit house, jungle, grime en electro. Live draait hij eclectische, energieke sets vol ravegeschiedenis en eigentijdse bass.",
+"Rival Consoles":"Rival Consoles is het project van de Britse producer Ryan Lee West, die emotionele, analoge elektronische muziek maakt vol warme synths en organische texturen. Live bouwt hij intense composities op die tussen melancholie en euforie balanceren.",
+"Faustin":"Faustin is een dj uit de Nederlandse clubscene die een dansbare, eigenzinnige selectie elektronische muziek draait. Live brengt hij een sfeervolle, opbouwende set die de avond in gang zet.",
+"Massimiliano Pagliara":"Massimiliano Pagliara is een in Berlijn gevestigde Italiaanse dj en producer, geliefd om zijn warme, melodieuze house en disco met een liefde voor analoge synths. Zijn sets zijn uitnodigend en sfeervol, gericht op groove en euforie.",
+"Byron Yeates":"Byron Yeates is een in Berlijn gevestigde dj en producer, oprichter van Radiant Records en geworteld in de queer clubcultuur. Live zijn zijn sets speels en theatraal, met een fijngevoel voor de dansvloer.",
+"Dr. Rubinstein":"Dr. Rubinstein is een Israëlische dj met Berlijnse roots, bekend om haar rauwe, energieke sets vol acid, techno en oude rave-invloeden. Live staat ze bekend om haar aanstekelijke speelplezier en strakke, hypnotiserende mixen.",
+"Yuval Avital":"Yuval Avital is een in Milaan gevestigde, Israëlische multimediakunstenaar en componist die geluid, beeld en performance samenbrengt in grootse, intercultureel geïnspireerde werken. Live is het een meeslepende, zintuiglijke ervaring.",
+"KC Sumatra":"KC Sumatra is een non-binaire dj uit de omgeving van Nijmegen met een voorliefde voor mondiale clubsounds en grensoverschrijdende ritmes. Live brengt KC een energieke, eclectische set vol invloeden van over de hele wereld.",
+"GRCA":"GRCA. is een Belgisch-Angolese dj en producer die batida en kuduro uit het Lissabonse circuit naar de dansvloer brengt. Live serveert GRCA. snelle, percussieve en explosieve sets vol Afro-diasporische clubenergie.",
+"GRCA.":"GRCA. is een Belgisch-Angolese dj en producer die batida en kuduro uit het Lissabonse circuit naar de dansvloer brengt. Live serveert GRCA. snelle, percussieve en explosieve sets vol Afro-diasporische clubenergie.",
+"Ahadadream":"Ahadadream is een Londense dj en producer die UK garage, dancehall en Zuid-Aziatische percussie samensmelt tot rusteloze, drumgedreven clubmuziek. Live trakteert hij op energieke, ongrijpbare sets die genres en continenten aan elkaar knopen.",
+"Riddimbox by Rozaly":"Riddimbox is het live-project van Rozaly, waarin Curaçaose en Caribische soundsystem-cultuur centraal staat. Verwacht een vrij geïmproviseerde bouyon- en dancehall-jam vol bonkende bas en ongepolijste vloerenergie.",
+"DJ Tobzy":"DJ Tobzy is een jonge Nigeriaanse dj uit Lagos die afrobeats, amapiano, gqom en baile funk versnijdt tot het hyperkinetische 'cruise beat'. Zijn sets zijn chaotisch en adrenalinevol, vol airhorns en drops.",
+"Badsista":"Badsista is een dj en producer uit São Paulo die baile funk vermengt met house, techno en bassmuziek. Geworteld in de queer-scene brengt ze rauwe, peppige sets tussen funk carioca, jaren-90 trance en hard techno.",
+"Sia Sierra":"Sia Sierra is een dj uit Enschede met een gloeiend hete mix van ghettotech, Miami bass, baile funk en afro-tropische clubmuziek. Haar sets zijn snel, stuiterend en feestelijk.",
+"Yucky":"Yucky is een dj en producer uit Den Haag die beweegt door borrelende diaspora-elektronica en experimentele clubsounds. Live levert hij diverse, energieke sets waarin uiteenlopende ritmes soepel in elkaar overlopen.",
+"MSM String Quartet":"Het MSM String Quartet is een Maastrichts strijkkwartet dat zich toelegt op twintigste-eeuws en hedendaags repertoire. Met geprezen uitvoeringen brengen ze klassieke verfijning naar het festivalterrein, scherp en avontuurlijk gespeeld.",
+"Lonelinoise":"Lonelinoise is het hedendaags-klassieke platform van trombonist en componist Sebastiaan Kemner, verbonden aan het Koninklijk Conservatorium in Den Haag. Verwacht een experimentele, nieuwsgierige benadering van klassieke muziek.",
+"Nectar Woode":"Nectar Woode is een Brits-Ghanese singer-songwriter uit Londen met een warme mix van soul, jazz-akkoorden en R&B. Haar live shows draaien om zachte vocalen en persoonlijke verhalen, intiem en magnetisch gebracht.",
+"Rens & Jaïr":"Rens & Jaïr zijn een Amsterdams duo dat oldschool R&B, Nederhop en elektronische pop combineert tot theatrale, feelgood hiphop. Hun optredens staan bekend om ongebreidelde energie, scherpe teksten en humor.",
+"Raynor":"Raynor is een jonge singer-songwriter uit Noord-Londen die luchtige britpop combineert met rauwe, urban invloeden à la Blur en The Streets. Na een doorbraak op TikTok brengt hij introspectieve, sterk geschreven nummers live ten gehore.",
+"Rikas":"Rikas is een indiepop-band uit de omgeving van Stuttgart die retropop, funk en soul mengt met een speelse indierock-twist. Live vallen hun wisselende leadzang en rijke samenzang op, geslepen in honderden shows door heel Europa.",
+"Sam Quealy":"Sam Quealy is een in Sydney geboren, in Parijs gevestigde performer die technopop, anarchistische pop en hyperfeminiene chaos combineert. Met een achtergrond in dans en cabaret zijn haar shows theatraal, fel en onvoorspelbaar.",
+"Nicolini":"Nicolini is een Amsterdams brein achter een DIY-mix van bonkende drums, goedkope synths en sluwe baslijnen, ergens tussen dubby wave en mutant dancehall. Live verandert deze 'Penni Funk' in een psychedelische koortsdroom.",
+"Elena Colombi":"Elena Colombi is een in Londen gevestigde Italiaanse dj en NTS-radiohost, bekend om haar onbevreesd eclectische selecties. Haar sets vormen een collage van techno, post-punk, EBM, industrial en wave, donker en avontuurlijk gemixt.",
+"Twiena":"Twiena is een dj uit Amsterdam met Vietnamese roots die rauwe rave en techno mengt met opzwepende melodieën en jaren-90 esthetiek. Vanuit haar RAUM-residentie brengt ze intense, gelaagde en persoonlijke sets.",
+"Tra Fasi & Hotel Mokum":"Tra Fasi is een platform rond de verborgen punkscene van Suriname, gekoppeld aan het Amsterdamse vrijplaats-collectief Hotel Mokum. Samen brengen ze een rauwe, DIY-punkavond met rebelse energie en een sterke ondergrondse identiteit.",
+"Ajjit":"AJJIT is een performance van Khadija El Kharraz Alami en producer Cheb Runner waarin Marokkaanse tradities als Gnaoua, Ahwach en Chaabi tot leven komen. Cheb Runner stuurt deze polyritmische dansmuziek door elektronica heen, terwijl ritme en beweging het verhaal dragen.",
+"Honey I'm Home":"Honey I'm Home is een Amsterdamse shoegaze-band die de rauwe energie van jaren-90 alternatieve rock naar het heden trekt. Live botsen wollige, fuzzy gitaarlagen met heldere Pixies-achtige zang.",
+"Vals Alarm":"Vals Alarm is een Haagse band die surfrock, ska en punk combineert tot energieke, pakkende nummers met scherpe teksten. Hun shows zijn speels en explosief, met vaak een diepere laag onder de catchy melodieën.",
+"Bomb-Strap":"Bombstrap is een viertal uit Manchester en Rotterdam dat nihilistische, ruige hardcore speelt. Verwacht een meedogenloze, abrasieve live-ervaring vol intensiteit, geworteld in de underground.",
+"Camille Maria":"Camille Maria is een gepassioneerde platenselector en dj met jaren ervaring in het verzamelen van vinyl. Live deelt ze een eigenzinnig, persoonlijk geluid dat uit haar diepe platenkennis is opgebouwd.",
+"Phantom Wizard":"Phantom Wizard is het alias van de Amsterdamse multi-instrumentalist en componist Isha Forster, opgegroeid in Zuidoost. Zijn experimentele muziek ligt op het kruispunt van jazz, ambient, folk en elektronica, live deels gecomponeerd en deels geïmproviseerd.",
+"Rrita Jashari":"Rrita Jashari is een in Kosovo geboren, in Brussel gevestigde dj en mede-oprichter van het soundsystem 54 Sound. In haar sets mixt ze experimentele en underground muziek met dancefloor-hits en Jamaicaanse ritmes als reggae en dub.",
+"Margie":"Margie is een dj, schrijver en community-builder uit Eindhoven, verbonden aan Rush Hour en Echobox Radio. Met haar platform LOCH INN draait ze grensverleggende, creatief-diverse clubmuziek.",
+"Helen Island":"Helen Island is het project van de in Parijs gevestigde Léopold Collin, met een genre-agnostische mix van neo-ambient, shoegaze, synthpop en lo-fi beats. Live levert het een dromerige, DIY-gekleurde sfeer op.",
+"Rainy Miller":"Rainy Miller is een producer en songwriter uit Preston en labelbaas van Fixed Abode, vooraan in de Britse experimentele elektronica rond de Manchester-scene. Hij buigt pop, ambient en rap om tot intieme, broeierige en zeer persoonlijke songs.",
+"Sticks":"Sticks (Junte Uiterwijk) is een raplegende uit Zwolle, bekend van Opgezwolle en gastheer van dit festival. Op het podium toont hij waarom hij tot de belangrijkste rappers van Nederland wordt gerekend, met scherpe pen en doorleefde flow.",
+"Sticks & ???":"Een verrassingsoptreden samengesteld door festivalgastheer Sticks. Wie er meedoet hoor je pas ter plekke — verwacht het onverwachte.",
+"Sticks x Nooit Meer Slapen":"Een live-aflevering in de sfeer van het bekende programma Nooit Meer Slapen, met rapper Sticks. Verwacht een ongedwongen, grappig en persoonlijk gesprek.",
+"Rabbit Radio: Liza v/d Brink & Vera Siemons":"Een live-radioprogramma vanaf het festival, gepresenteerd door Liza van den Brink en Vera Siemons. Gesprekken, muziek en festivalsfeer rechtstreeks van het terrein.",
+"Rabbit Radio: Indie Gloria":"Een live-uitzending van Rabbit Radio met Indie Gloria, vol gesprekken en muziek vanaf het festivalterrein.",
+"Rabbit Radio: Arnold Scheepmaker":"Een live-radioprogramma van Rabbit Radio met Arnold Scheepmaker, met gesprekken en muziek vanaf het festival.",
+"The Croque Madame Revue by Maison the Faux":"Een uitbundige mode- en performancerevue van kunstenaarsduo Maison the Faux op het Croque Madame-podium. Verwacht theater, mode en spektakel ineen.",
+"Orkater & Invites":"Muziektheatergezelschap Orkater nodigt gasten uit voor een doorlopend programma vol muziek en theater. Verwacht verrassende, genre-overstijgende optredens.",
+"The Space Choir":"Een meezing-koorbeleving waarin je samen met anderen onder begeleiding zingt. Geen publiek, maar meedoen — iedereen kan aansluiten.",
+"Prof. Soortkill":"Een eigenzinnig, speels programma-onderdeel op het Holding-podium, buiten de gebaande paden. Verwacht iets onverwachts.",
+"Samba Workshop":"Een meedoe-workshop waarin je samen Braziliaanse samba-ritmes en -percussie leert. Geen optreden om naar te kijken, maar om zelf aan mee te doen.",
+"Dans Workshop":"Een laagdrempelige dansworkshop waarin je samen beweegt en nieuwe pasjes leert. Meedoen kan iedereen.",
+"Knits & Notes":"Een ontspannen plek om te breien en te haken onder het genot van muziek. Een rustige, creatieve pauze tussen de optredens door.",
+"Zine Workshop":"Een creatieve workshop waarin je je eigen zine maakt: knippen, plakken en schrijven. Neem je eigen mini-magazine mee naar huis.",
+"Masterclass Klimaatpoëzie":"Een masterclass waarin poëzie en klimaat samenkomen. Schrijf en deel je eigen woorden over de wereld om je heen.",
+"Masterclass Vervelen":"Een speelse masterclass over de kunst van het niksdoen en je vervelen. Even helemaal niets — en ontdek wat dat oplevert.",
+"Masterclass Stem":"Een masterclass rond je stem: spreken, zingen en klinken. Ontdek wat je met je eigen stem kunt.",
+"Brainwash Breakfast Club":"Een ochtendlijk gespreksprogramma met scherpe denkers en verrassende gesprekken bij je koffie. Wakker worden met ideeën.",
+"Speakers Corner":"Een podium voor gesprek en debat, waar sprekers prikkelende ideeën en verhalen delen. Luister mee of meng je in het gesprek.",
+"De Biecht":"Een intiem programma-onderdeel waarin verhalen en bekentenissen worden gedeeld. Eerlijk, persoonlijk en soms ontwapenend.",
+"Live, Love, Lesbi":"Een talk- en podcastprogramma rond liefde, queer-zijn en alles daartussenin. Open, warm en met humor.",
+};
 function toMin(t){let h=parseInt(t.slice(0,2),10),m=parseInt(t.slice(3),10);return (h<6?h+24:h)*60+m;}
 const items = D.map((r,i)=>{
   const [day,stage,s,e,name,genre,vibe]=r;
@@ -575,7 +859,7 @@ function festivalContext(){
 const NOW=festivalContext();
 
 /* ---- state ---- */
-let state = {day: NOW.dayId || "vr", vibe:"all", q:""};
+let state = {day: NOW.dayId || "vr", vibe:"all", view:"list"};
 let favs = new Set(JSON.parse(localStorage.getItem("dtrh_favs")||"[]"));
 function saveFavs(){localStorage.setItem("dtrh_favs",JSON.stringify([...favs]));}
 
@@ -619,7 +903,7 @@ function cardHTML(it,opts){
   const lit=opts.lit?" lit":"";
   const live=isLive(it)?" live":"";
   const liveBadge=isLive(it)?"<span class='live-badge'><span class='dot'></span>NU LIVE</span>":"";
-  return "<div class='card"+lit+live+"' data-v='"+it.vibe+"' data-sort='"+it.sort+"'>"+
+  return "<div class='card"+lit+live+"' data-v='"+it.vibe+"' data-sort='"+it.sort+"' data-idx='"+it.i+"'>"+
     "<div class='time serif'><div class='t1'>"+it.s+"</div><div class='t2'>"+it.e+"</div></div>"+
     "<div class='info'><div class='nm serif'>"+esc(it.name)+"</div>"+
       "<div class='meta'>"+liveBadge+
@@ -636,16 +920,40 @@ function genreHeader(v,n){
     "<span class='gcount'>"+n+"</span></div>";
 }
 
+const gridEl=document.getElementById("grid");
+const gridhintEl=document.getElementById("gridhint");
+
+function wireFav(container){
+  container.querySelectorAll(".fav").forEach(f=>{
+    f.onclick=(ev)=>{
+      ev.stopPropagation();
+      const k=f.dataset.k;
+      if(favs.has(k)){favs.delete(k);} else {favs.add(k);}
+      saveFavs();
+      if(state.vibe==="fav"){ render(); }
+      else {f.classList.toggle("on");f.textContent=favs.has(k)?"★":"☆";}
+      syncModalFav(k);
+    };
+  });
+}
+
 function render(){
   nowInserted=false;
+  const grid = state.view==="grid";
+  gridEl.classList.toggle("hidden",!grid);
+  gridhintEl.classList.toggle("hidden",!grid);
+  listEl.classList.toggle("hidden",grid);
+
   let rows=items.filter(it=>it.day===state.day);
   if(state.vibe==="fav") rows=rows.filter(it=>favs.has(it.key));
   else if(state.vibe!=="all") rows=rows.filter(it=>it.vibe===state.vibe);
   const byTime=(a,b)=> a.sort-b.sort || STAGES.indexOf(a.stage)-STAGES.indexOf(b.stage);
 
-  const live=rows.filter(isLive).length;
+  const liveN=rows.filter(isLive).length;
   countEl.textContent = rows.length+" acts · "+state.day.toUpperCase()+
-     (state.vibe==="fav"?" · jouw lijst":"")+(live?" · "+live+" nu live":"");
+     (state.vibe==="fav"?" · jouw lijst":"")+(liveN?" · "+liveN+" nu live":"");
+
+  if(grid){ renderGrid(); return; }
 
   if(!rows.length){
     listEl.innerHTML="<div class='empty'>"+
@@ -665,22 +973,96 @@ function render(){
       html+="</div>";
     });
   } else {
-    // één categorie, chronologisch, oplichtend, met NU-lijn
     rows.sort(byTime);
     rows.forEach(it=>{ html+=maybeNowline(it)+cardHTML(it,{lit:state.vibe!=="fav"}); });
   }
   listEl.innerHTML=html;
-  listEl.querySelectorAll(".fav").forEach(f=>{
-    f.onclick=(ev)=>{
-      ev.stopPropagation();
-      const k=f.dataset.k;
-      if(favs.has(k)){favs.delete(k);} else {favs.add(k);}
-      saveFavs();
-      if(state.vibe==="fav") render();
-      else {f.classList.toggle("on");f.textContent=favs.has(k)?"★":"☆";}
-    };
-  });
+  wireFav(listEl);
+  listEl.onclick=(e)=>{ if(e.target.closest(".fav"))return; const c=e.target.closest(".card"); if(c) openDetail(items[+c.dataset.idx]); };
 }
+
+/* ---- BLOKKENSCHEMA per stage ---- */
+const PPM=2.5, LABW=78;
+function renderGrid(){
+  const day=items.filter(it=>it.day===state.day);
+  const t0=Math.min.apply(null,day.map(it=>it.sort));
+  const t1=Math.max.apply(null,day.map(it=>it.eSort));
+  const gridW=Math.ceil((t1-t0)*PPM);
+  const present=STAGES.filter(s=>day.some(it=>it.stage===s));
+  const matchOf=it=> state.vibe==="all" || (state.vibe==="fav"?favs.has(it.key):it.vibe===state.vibe);
+  let html="<div class='tt-inner' style='--labW:"+LABW+"px'>";
+  // tijd-as
+  html+="<div class='tt-row tt-head'><div class='tt-label'></div><div class='tt-track' style='width:"+gridW+"px'>";
+  for(let m=Math.ceil(t0/60)*60;m<=t1;m+=60){
+    html+="<div class='tt-tick' style='left:"+((m-t0)*PPM)+"px'>"+("0"+(Math.floor(m/60)%24)).slice(-2)+":00</div>";
+  }
+  html+="</div></div>";
+  present.forEach(st=>{
+    html+="<div class='tt-row'><div class='tt-label'>"+esc(st)+"</div><div class='tt-track' style='width:"+gridW+"px'>";
+    day.filter(it=>it.stage===st).forEach(it=>{
+      const left=(it.sort-t0)*PPM, w=Math.max(40,(it.eSort-it.sort)*PPM-3);
+      const cls="blk"+(matchOf(it)?"":" dim")+(isLive(it)?" live":"");
+      html+="<div class='"+cls+"' data-v='"+it.vibe+"' data-idx='"+it.i+"' style='left:"+left+"px;width:"+w+"px'>"+
+        "<span class='bt'>"+it.s+"</span><span class='bn'>"+esc(it.name)+"</span></div>";
+    });
+    html+="</div></div>";
+  });
+  if(NOW.dayId===state.day && NOW.nowSort>=t0 && NOW.nowSort<=t1){
+    html+="<div class='tt-now' style='left:"+(LABW+(NOW.nowSort-t0)*PPM)+"px'><span>NU</span></div>";
+  }
+  html+="</div>";
+  gridEl.innerHTML=html;
+  gridEl.onclick=(e)=>{ const b=e.target.closest(".blk"); if(b) openDetail(items[+b.dataset.idx]); };
+  const sx = NOW.dayId===state.day ? LABW+(NOW.nowSort-t0)*PPM-120 : 0;
+  gridEl.scrollLeft=Math.max(0,sx);
+}
+
+/* ---- ARTIEST-DETAIL ---- */
+const modal=document.getElementById("modal");
+let modalKey=null;
+function descFor(it){
+  if(DESC[it.name]) return DESC[it.name];
+  let b=it.name.replace(/\s*\((?:live|DJ-set)\)/ig,"").replace(/\s+b2b\s+.*/i,"").replace(/\s+presents:.*/i,"").trim();
+  if(DESC[b]) return DESC[b];
+  return "Meer info over deze act vind je via de knoppen hieronder.";
+}
+function openDetail(it){
+  modalKey=it.key;
+  const tag=document.getElementById("mTag");
+  tag.className="m-tag "+it.vibe; tag.textContent=META[it.vibe].e+" "+META[it.vibe].t;
+  document.getElementById("mName").textContent=it.name;
+  document.getElementById("mWhen").innerHTML="<span>🕑 "+it.s+"–"+it.e+"</span><span>📍 "+esc(it.stage)+"</span><span>"+DAYS.find(d=>d.id===it.day).lbl+"</span>";
+  document.getElementById("mGenre").textContent=it.genre;
+  document.getElementById("mDesc").textContent=descFor(it);
+  const q=encodeURIComponent(it.name.replace(/\s*\(.*?\)/g,""));
+  document.getElementById("mActions").innerHTML=
+    "<button class='m-fav"+(favs.has(it.key)?" on":"")+"' id='mFav'>"+(favs.has(it.key)?"★ In mijn lijst":"☆ Aan mijn lijst")+"</button>"+
+    "<a class='sp' target='_blank' rel='noopener' href='https://open.spotify.com/search/"+q+"'>♫ Spotify</a>"+
+    "<a target='_blank' rel='noopener' href='https://www.google.com/search?q="+encodeURIComponent(it.name+" Down The Rabbit Hole")+"'>Meer info ↗</a>";
+  document.getElementById("mFav").onclick=()=>{
+    if(favs.has(it.key)) favs.delete(it.key); else favs.add(it.key);
+    saveFavs(); syncModalFav(it.key); render();
+  };
+  modal.classList.remove("hidden");
+}
+function syncModalFav(k){
+  if(modalKey!==k) return;
+  const f=document.getElementById("mFav"); if(!f) return;
+  const on=favs.has(k);
+  f.className="m-fav"+(on?" on":""); f.textContent=on?"★ In mijn lijst":"☆ Aan mijn lijst";
+}
+function closeModal(){ modal.classList.add("hidden"); modalKey=null; }
+document.getElementById("mClose").onclick=closeModal;
+document.getElementById("modalBd").onclick=closeModal;
+
+/* ---- view toggle ---- */
+document.getElementById("viewseg").querySelectorAll("button").forEach(b=>{
+  b.onclick=()=>{
+    state.view=b.dataset.view;
+    document.querySelectorAll("#viewseg button").forEach(x=>x.classList.toggle("on",x===b));
+    render();
+  };
+});
 
 function timeNow(){const n=new Date();return ("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2);}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
@@ -756,12 +1138,12 @@ mapwrap.addEventListener("touchend",e=>{ if(e.touches.length<2) pinch=null; },{p
 /* GPS — plattegrond geijkt op 'Het Meer': similarity-transform afgeleid uit de
    echte ligging van het meer (OSM) en de getekende ligging op de plattegrond.
    Houdt rekening met de rotatie van de tekening t.o.v. het noorden. */
-const MAP_CAL={la0:51.844667, lo0:5.697626, mlat:111320.0, mlon:68773.0,
-               a:-0.00033154, b:0.00035659, tx:0.75448371, ty:0.67411464};
+const MAP_CAL={la0:51.844666975, lo0:5.697625683, mlat:111320.0, mlon:68773.002,
+               a:-0.000316541, b:-0.000383037, c:0.000383037, d:-0.000316541, tx:0.7575391, ty:0.6734207};
 const FEST={lat:51.8499367, lng:5.6970858};
 function frac(lat,lng){
   const E=(lng-MAP_CAL.lo0)*MAP_CAL.mlon, N=(lat-MAP_CAL.la0)*MAP_CAL.mlat;
-  return {x:MAP_CAL.a*E-MAP_CAL.b*N+MAP_CAL.tx, y:MAP_CAL.b*E+MAP_CAL.a*N+MAP_CAL.ty};
+  return {x:MAP_CAL.a*E+MAP_CAL.b*N+MAP_CAL.tx, y:MAP_CAL.c*E+MAP_CAL.d*N+MAP_CAL.ty};
 }
 function distKm(la1,lo1,la2,lo2){
   const R=6371,toR=x=>x*Math.PI/180;
