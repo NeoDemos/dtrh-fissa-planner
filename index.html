@@ -255,7 +255,7 @@
       <div class="mapinner" id="mapinner">
         <img id="mapimg" alt="DTRH 2026 plattegrond"
              src="https://downtherabbithole.nl/img/cache/media_4602_original_85-DTRH26%20Totaal.webp">
-        <div class="gpslabel hidden" id="gpslabel">Jij (indicatief)</div>
+        <div class="gpslabel hidden" id="gpslabel">📍 Jij</div>
         <div class="gpsdot hidden" id="gpsdot"></div>
       </div>
       <div class="mapzoom">
@@ -264,8 +264,8 @@
       </div>
     </div>
     <div class="gpsstatus" id="gpsstatus">
-      <span class="muted">Locatie nog niet gedeeld. De stip is een indicatieve plek op de tekening —
-      gebruik <b>Navigeer</b> voor exacte route.</span>
+      <span class="muted">Locatie nog niet gedeeld. De stip wordt op de plattegrond gezet, geijkt op Het Meer —
+      gebruik <b>Navigeer</b> voor de exacte route ernaartoe.</span>
     </div>
   </div>
 </div>
@@ -753,11 +753,16 @@ mapwrap.addEventListener("touchmove",e=>{
 },{passive:false});
 mapwrap.addEventListener("touchend",e=>{ if(e.touches.length<2) pinch=null; },{passive:true});
 
-/* GPS — calibratie is INDICATIEF (geen exacte georeferentie van de tekening) */
-const CAL={latTop:51.8540, latBot:51.8456, lngLeft:5.6900, lngRight:5.7040};
+/* GPS — plattegrond geijkt op 'Het Meer': similarity-transform afgeleid uit de
+   echte ligging van het meer (OSM) en de getekende ligging op de plattegrond.
+   Houdt rekening met de rotatie van de tekening t.o.v. het noorden. */
+const MAP_CAL={la0:51.844667, lo0:5.697626, mlat:111320.0, mlon:68773.0,
+               a:-0.00033154, b:0.00035659, tx:0.75448371, ty:0.67411464};
 const FEST={lat:51.8499367, lng:5.6970858};
-function frac(lat,lng){return {x:(lng-CAL.lngLeft)/(CAL.lngRight-CAL.lngLeft),
-                               y:(CAL.latTop-lat)/(CAL.latTop-CAL.latBot)};}
+function frac(lat,lng){
+  const E=(lng-MAP_CAL.lo0)*MAP_CAL.mlon, N=(lat-MAP_CAL.la0)*MAP_CAL.mlat;
+  return {x:MAP_CAL.a*E-MAP_CAL.b*N+MAP_CAL.tx, y:MAP_CAL.b*E+MAP_CAL.a*N+MAP_CAL.ty};
+}
 function distKm(la1,lo1,la2,lo2){
   const R=6371,toR=x=>x*Math.PI/180;
   const dLa=toR(la2-la1),dLo=toR(lo2-lo1);
@@ -774,7 +779,7 @@ function onPos(p){
   const {latitude:lat,longitude:lng,accuracy}=p.coords;
   const d=distKm(lat,lng,FEST.lat,FEST.lng);
   const f=frac(lat,lng);
-  const onSite = d<1.3 && f.x>=0 && f.x<=1 && f.y>=0 && f.y<=1;
+  const onSite = d<1.5 && f.x>=-0.03 && f.x<=1.03 && f.y>=-0.03 && f.y<=1.03;
   if(onSite){
     gpsdot.style.left=(f.x*100)+"%"; gpsdot.style.top=(f.y*100)+"%";
     gpslabel.style.left=(f.x*100)+"%"; gpslabel.style.top=(f.y*100)+"%";
@@ -784,8 +789,8 @@ function onPos(p){
       mapwrap.scrollLeft=f.x*mapinner.offsetWidth-mapwrap.clientWidth/2;
       mapwrap.scrollTop =f.y*mapinner.offsetHeight-mapwrap.clientHeight/2;
     });
-    gpsstatus.innerHTML="<b>📍 Je bent op het terrein.</b> De blauwe stip toont je plek "+
-      "<span class='muted'>(indicatief, ±"+Math.round(accuracy)+" m).</span>";
+    gpsstatus.innerHTML="<b>📍 Je bent op het terrein.</b> De blauwe stip toont je plek, "+
+      "geijkt op Het Meer <span class='muted'>(GPS-nauwkeurigheid ±"+Math.round(accuracy)+" m).</span>";
   } else {
     gpsdot.classList.add("hidden"); gpslabel.classList.add("hidden");
     const txt = d<25 ? ("~"+d.toFixed(d<10?1:0)+" km van de ingang") : ("~"+Math.round(d)+" km hiervandaan");
