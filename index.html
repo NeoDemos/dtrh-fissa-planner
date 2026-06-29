@@ -40,9 +40,11 @@
 
   /* ---- compacte app-header ---- */
   .appbar{position:sticky;top:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:center;
-    background:var(--green);padding:9px 14px}
-  .appbar .wm{height:100%;width:auto;max-width:80%;display:block;object-fit:contain;
-    filter:drop-shadow(0 1px 5px rgba(0,0,0,.3))}
+    background:linear-gradient(108deg,#102f1a 0%,#1d5a43 50%,#34324f 100%);padding:10px 14px;overflow:hidden}
+  .appbar::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(85% 130% at 50% -25%,rgba(255,255,255,.11),transparent 70%)}
+  .appbar .wm{height:100%;width:auto;max-width:78%;display:block;object-fit:contain;position:relative;
+    filter:drop-shadow(0 2px 7px rgba(0,0,0,.42))}
   .appbar .wm-txt{color:#fff;font-size:20px;font-weight:700;letter-spacing:.01em}
 
   /* ---- sticky controls (Programma) ---- */
@@ -58,7 +60,19 @@
   .chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:999px;
     font-size:14px;font-weight:600;border:1px solid var(--line2);background:var(--card);color:var(--ink);
     cursor:pointer;transition:.15s;white-space:nowrap}
-  .chip .em{font-size:14px;line-height:1}
+  /* ---- icons ---- */
+  .i{width:1.05em;height:1.05em;display:block;flex:none}
+  .ic,.gicon{display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .chip .ic{font-size:16px}
+  .m-when span{display:inline-flex;align-items:center;gap:5px}
+  .fav .i{width:22px;height:22px}
+  .m-actions a,.m-actions button{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+  .m-actions .i{width:17px;height:17px}
+  .gpslabel{display:inline-flex;align-items:center;gap:4px}
+  .gpslabel .ic{font-size:11px}
+  #nowbtn .ic{font-size:15px}
+  .locfab .ic{font-size:25px}
+  .bottomnav .bi{display:inline-flex}
   .chip.on[data-v="all"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .chip.on[data-v="zon"]{background:var(--zon);color:#fff;border-color:var(--zon)}
   .chip.on[data-v="feest"]{background:var(--feest);color:#fff;border-color:var(--feest)}
@@ -80,7 +94,8 @@
   .gsec{margin-top:26px}
   .gsec:first-child{margin-top:8px}
   .gsec-h{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:14px;margin-bottom:10px;border:1px solid}
-  .gsec-h .ge{font-size:21px;line-height:1}
+  .gsec-h .gicon{width:36px;height:36px;border-radius:50%;font-size:19px;
+    background:rgba(255,255,255,.5);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
   .gsec-h .gt{flex:1;min-width:0}
   .gsec-h .gt .gtitle{display:block;font-size:19px;font-weight:600;line-height:1.05;letter-spacing:-.01em}
   .gsec-h .gt .gsub{display:block;font-size:11px;margin-top:1px;font-style:italic;opacity:.85}
@@ -237,11 +252,11 @@
   <div class="days" id="days"></div>
   <div class="vibes" id="vibes">
     <div class="chip on" data-v="all">Alles</div>
-    <div class="chip" data-v="zon"><span class="em">☀️</span>In de zon</div>
-    <div class="chip" data-v="feest"><span class="em">🎉</span>Feesten</div>
-    <div class="chip" data-v="rave"><span class="em">⚡</span>Ravennn</div>
-    <div class="chip" data-v="anders"><span class="em">💬</span>Anders</div>
-    <div class="chip" data-v="fav"><span class="em">⭐</span>Mijn lijst</div>
+    <div class="chip" data-v="zon"><span class="ic" data-ic="zon"></span>In de zon</div>
+    <div class="chip" data-v="feest"><span class="ic" data-ic="feest"></span>Feesten</div>
+    <div class="chip" data-v="rave"><span class="ic" data-ic="rave"></span>Ravennn</div>
+    <div class="chip" data-v="anders"><span class="ic" data-ic="anders"></span>Anders</div>
+    <div class="chip" data-v="fav"><span class="ic" data-ic="fav"></span>Mijn lijst</div>
   </div>
   <div class="viewrow">
     <span class="count kicker" id="count"></span>
@@ -257,9 +272,8 @@
   <div id="grid" class="hidden"></div>
   <div class="gridhint hidden" id="gridhint">Veeg horizontaal/verticaal · tik op een act voor info</div>
   <footer>
-    Vibe-indeling op basis van research per artiest.<br>
-    ☀️ <b>In de zon</b> · melodisch wegzweven &nbsp;—&nbsp; 🎉 <b>Feesten</b> · upbeat feestmuziek &nbsp;—&nbsp; ⚡ <b>Ravennn</b> · zware club / rave<br>
-    Tijden indicatief — officieel <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
+    Ingedeeld op vibe — <b>In de zon</b> dromerig · <b>Feesten</b> upbeat · <b>Ravennn</b> techno &amp; electronic.<br>
+    Tijden en teksten via het officiële <a href="https://downtherabbithole.nl/programma" target="_blank" rel="noopener">DTRH-programma</a>.
   </footer>
 </main>
 
@@ -268,17 +282,17 @@
     <div class="mapinner" id="mapinner">
       <img id="mapimg" alt="DTRH 2026 plattegrond"
            src="https://downtherabbithole.nl/img/cache/media_4602_original_85-DTRH26%20Totaal.webp">
-      <div class="gpslabel hidden" id="gpslabel">📍 Jij</div>
+      <div class="gpslabel hidden" id="gpslabel"><span class="ic" data-ic="pin"></span>Jij</div>
       <div class="gpsdot hidden" id="gpsdot"></div>
     </div>
   </div>
   <div class="mapstatus hidden" id="gpsstatus"></div>
-  <button class="locfab" id="gpsbtn" aria-label="Toon mijn locatie">⌖</button>
+  <button class="locfab" id="gpsbtn" aria-label="Toon mijn locatie"><span class="ic" data-ic="locate"></span></button>
 </section>
 
 <nav class="bottomnav" id="bottomnav">
-  <button data-tab="prog" class="on"><span class="bi">♪</span><span>Programma</span></button>
-  <button data-tab="map"><span class="bi">⌖</span><span>Plattegrond</span></button>
+  <button data-tab="prog" class="on"><span class="bi" data-ic="note"></span><span>Programma</span></button>
+  <button data-tab="map"><span class="bi" data-ic="map"></span><span>Plattegrond</span></button>
 </nav>
 
 <div class="modal hidden" id="modal">
@@ -295,7 +309,7 @@
   </div>
 </div>
 
-<button id="nowbtn">⏱ Spring naar nu</button>
+<button id="nowbtn"><span class="ic" data-ic="clock"></span>Nu</button>
 
 <script>
 /* ---- Lineup data (day, stage, start, end, name, genre, vibe) ---- */
@@ -537,11 +551,28 @@ const D = [
 
 /* ---- build objects ---- */
 const GENRE_ORDER = ["zon","feest","rave","anders"];
+/* ---- eigen line-icon set (vervangt emoji) ---- */
+const _s='<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">';
+const ICONS={
+  zon:_s+'<circle cx="12" cy="12" r="4.1"/><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M19.4 4.6l-1.9 1.9M6.5 17.5l-1.9 1.9"/></svg>',
+  feest:_s+'<path d="M11.5 3.2l1.7 4.6 4.6 1.7-4.6 1.7-1.7 4.6-1.7-4.6L5.2 9.5l4.6-1.7z"/><path d="M18 14.5l.65 1.85L20.5 17l-1.85.65L18 19.5l-.65-1.85L15.5 17l1.85-.65z"/></svg>',
+  rave:_s+'<path d="M13.6 2.3L5 13.4h5.3L9.4 21.7 19 9.6h-5.4z"/></svg>',
+  anders:_s+'<path d="M20.5 11.6c0 3.7-3.6 6.7-8 6.7-1.1 0-2.2-.2-3.1-.5L4 19.5l1.5-3.8C4.6 14.6 4 13.2 4 11.6 4 7.9 7.6 4.9 12 4.9s8.5 3 8.5 6.7z"/></svg>',
+  fav:_s+'<path d="M12 3.4l2.6 5.7 6.2.6-4.7 4.1 1.4 6.1L12 16.9 6.5 19.9l1.4-6.1L3.2 9.7l6.2-.6z"/></svg>',
+  favOn:'<svg class="i" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3.4l2.6 5.7 6.2.6-4.7 4.1 1.4 6.1L12 16.9 6.5 19.9l1.4-6.1L3.2 9.7l6.2-.6z"/></svg>',
+  pin:_s+'<path d="M12 21.2s-6.1-5-6.1-10.1a6.1 6.1 0 0112.2 0c0 5.1-6.1 10.1-6.1 10.1z"/><circle cx="12" cy="10.9" r="2.1"/></svg>',
+  clock:_s+'<circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.2l3.2 2"/></svg>',
+  note:_s+'<path d="M9 18.4V6.1l10-2.1v11.4"/><circle cx="6.4" cy="18.4" r="2.6"/><circle cx="16.4" cy="15.4" r="2.6"/></svg>',
+  map:_s+'<path d="M9 4.5L3.5 6.5v13L9 17.5l6 2 5.5-2v-13L15 6.5l-6-2z"/><path d="M9 4.5v13M15 6.5v13"/></svg>',
+  locate:_s+'<circle cx="12" cy="12" r="6.2"/><path d="M12 2.2v3.4M12 18.4v3.4M2.2 12h3.4M18.4 12h3.4"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>',
+  arrow:_s+'<path d="M7.5 16.5l9-9M9 7.5h7.5V15"/></svg>'
+};
+function applyIcons(root){(root||document).querySelectorAll("[data-ic]").forEach(el=>{el.innerHTML=ICONS[el.dataset.ic]||"";});}
 const META = {
-  zon:  {e:"☀️", t:"In de zon",     s:"melodisch wegzweven in de zon"},
-  feest:{e:"🎉", t:"Lekker feesten", s:"vrolijke upbeat feestmuziek"},
-  rave: {e:"⚡", t:"Ravennn",        s:"zware club & rave"},
-  anders:{e:"💬",t:"Anders",         s:"talks, theater & workshops"},
+  zon:  {t:"In de zon",      s:"melodisch wegzweven in de zon"},
+  feest:{t:"Lekker feesten", s:"vrolijke upbeat feestmuziek"},
+  rave: {t:"Ravennn",        s:"techno & zware electronic"},
+  anders:{t:"Anders",        s:"talks, theater & workshops"},
 };
 /* ---- originele artiestbeschrijvingen (eigen research, niet overgenomen van dtrh) ---- */
 const DESC = {
@@ -1321,14 +1352,14 @@ function cardHTML(it,opts){
     "<div class='time serif'><div class='t1'>"+it.s+"</div><div class='t2'>"+it.e+"</div></div>"+
     "<div class='info'><div class='nm serif'>"+esc(it.name)+"</div>"+
       "<div class='meta'>"+liveBadge+
-      "<span class='loc'>📍 "+esc(it.stage)+"</span>"+
+      "<span class='loc'>"+ICONS.pin+esc(it.stage)+"</span>"+
       "<span class='genre'>"+esc(it.genre)+"</span></div></div>"+
-    "<div class='fav"+(on?" on":"")+"' data-k=\""+esc(it.key)+"\">"+(on?"★":"☆")+"</div>"+
+    "<div class='fav"+(on?" on":"")+"' data-k=\""+esc(it.key)+"\">"+(on?ICONS.favOn:ICONS.fav)+"</div>"+
   "</div>";
 }
 function genreHeader(v,n){
   return "<div class='gsec-h' data-v='"+v+"'>"+
-    "<span class='ge'>"+META[v].e+"</span>"+
+    "<span class='gicon'>"+ICONS[v]+"</span>"+
     "<span class='gt'><span class='gtitle serif'>"+META[v].t+"</span>"+
     "<span class='gsub'>"+META[v].s+"</span></span>"+
     "<span class='gcount'>"+n+"</span></div>";
@@ -1345,7 +1376,7 @@ function wireFav(container){
       if(favs.has(k)){favs.delete(k);} else {favs.add(k);}
       saveFavs();
       if(state.vibe==="fav"){ render(); }
-      else {f.classList.toggle("on");f.textContent=favs.has(k)?"★":"☆";}
+      else {f.classList.toggle("on");f.innerHTML=favs.has(k)?ICONS.favOn:ICONS.fav;}
       syncModalFav(k);
     };
   });
@@ -1371,7 +1402,7 @@ function render(){
 
   if(!rows.length){
     listEl.innerHTML="<div class='empty'>"+
-      (state.vibe==="fav"?"Nog geen acts in je lijst.<br>Tik op ☆ bij een act om te plannen.":"Geen acts in deze categorie.")+
+      (state.vibe==="fav"?"Nog geen acts in je lijst.<br>Tik op de ster bij een act om te plannen.":"Geen acts in deze categorie.")+
       "</div>";
     return;
   }
@@ -1445,17 +1476,17 @@ function linkFor(it){ const k=srcKey(it); const L=typeof LINKS!=="undefined"?LIN
 function openDetail(it){
   modalKey=it.key;
   const tag=document.getElementById("mTag");
-  tag.className="m-tag "+it.vibe; tag.textContent=META[it.vibe].e+" "+META[it.vibe].t;
+  tag.className="m-tag "+it.vibe; tag.innerHTML=ICONS[it.vibe]+"<span>"+esc(META[it.vibe].t)+"</span>";
   document.getElementById("mName").textContent=it.name;
-  document.getElementById("mWhen").innerHTML="<span>🕑 "+it.s+"–"+it.e+"</span><span>📍 "+esc(it.stage)+"</span><span>"+DAYS.find(d=>d.id===it.day).lbl+"</span>";
+  document.getElementById("mWhen").innerHTML="<span>"+ICONS.clock+it.s+"–"+it.e+"</span><span>"+ICONS.pin+esc(it.stage)+"</span><span>"+DAYS.find(d=>d.id===it.day).lbl+"</span>";
   document.getElementById("mGenre").textContent=it.genre;
   const dsc=descFor(it), de=document.getElementById("mDesc");
   de.textContent=dsc; de.style.display=dsc?"":"none";
   const q=encodeURIComponent(it.name.replace(/\s*\(.*?\)/g,""));
   document.getElementById("mActions").innerHTML=
-    "<button class='m-fav"+(favs.has(it.key)?" on":"")+"' id='mFav'>"+(favs.has(it.key)?"★ In mijn lijst":"☆ Aan mijn lijst")+"</button>"+
-    "<a class='sp' target='_blank' rel='noopener' href='https://open.spotify.com/search/"+q+"'>♫ Spotify</a>"+
-    "<a target='_blank' rel='noopener' href='"+linkFor(it)+"'>Lees op DTRH ↗</a>";
+    "<button class='m-fav"+(favs.has(it.key)?" on":"")+"' id='mFav'>"+(favs.has(it.key)?ICONS.favOn+"In mijn lijst":ICONS.fav+"Aan mijn lijst")+"</button>"+
+    "<a class='sp' target='_blank' rel='noopener' href='https://open.spotify.com/search/"+q+"'>"+ICONS.note+"Spotify</a>"+
+    "<a target='_blank' rel='noopener' href='"+linkFor(it)+"'>DTRH"+ICONS.arrow+"</a>";
   document.getElementById("mFav").onclick=()=>{
     if(favs.has(it.key)) favs.delete(it.key); else favs.add(it.key);
     saveFavs(); syncModalFav(it.key); render();
@@ -1466,7 +1497,7 @@ function syncModalFav(k){
   if(modalKey!==k) return;
   const f=document.getElementById("mFav"); if(!f) return;
   const on=favs.has(k);
-  f.className="m-fav"+(on?" on":""); f.textContent=on?"★ In mijn lijst":"☆ Aan mijn lijst";
+  f.className="m-fav"+(on?" on":""); f.innerHTML=on?ICONS.favOn+"In mijn lijst":ICONS.fav+"Aan mijn lijst";
 }
 function closeModal(){ modal.classList.add("hidden"); modalKey=null; }
 document.getElementById("mClose").onclick=closeModal;
@@ -1608,7 +1639,7 @@ function onPos(p){
     gpsdot.classList.remove("hidden"); gpslabel.classList.remove("hidden");
     if(mapZoom<2.6) setZoom(3.2);
     requestAnimationFrame(()=>centerOn(f.x,f.y));
-    showStatus("<b>📍 Je staat hier</b> · geijkt op Het Meer, ±"+Math.round(accuracy)+" m");
+    showStatus("<b>"+ICONS.pin+"Je staat hier</b> · geijkt op Het Meer, ±"+Math.round(accuracy)+" m");
   } else {
     gpsbtn.classList.remove("on");
     gpsdot.classList.add("hidden"); gpslabel.classList.add("hidden");
@@ -1624,6 +1655,7 @@ function onErr(e){
 }
 
 /* ===================== START ===================== */
+applyIcons();
 render();
 updateNowBtn();
 /* auto-spring naar nu bij openen tijdens festival */
